@@ -46,4 +46,5 @@ app.*.map.json
 
 # Sercurity Related
 *.env
-firebase_options.dart
+lib/firebase_options.dart
+firebase.json
