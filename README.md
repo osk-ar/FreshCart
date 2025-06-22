@@ -1,4 +1,4 @@
-# supermarket
+# FreshCart
 
 A new Flutter project.
 
