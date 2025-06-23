@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:supermarket/app.dart';
 import 'package:supermarket/core/constants/app_paths.dart';
 import 'package:supermarket/core/services/dependency_injection.dart';
@@ -23,8 +24,8 @@ Future<void> main() async {
 
   // 4. Configure Firestore settings
   FirebaseFirestore.instance.settings = const Settings(
-    persistenceEnabled: true, // Enable offline persistence
-    cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED, // Use unlimited cache size
+    persistenceEnabled: true,
+    cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
   );
 
   // 5. Configure Crashlytics
@@ -37,8 +38,11 @@ Future<void> main() async {
     return true;
   };
 
-  // 5. Initialize GetIt service locator
+  // 6. Initialize GetIt service locator
   await setupServiceLocator();
+
+  // 7. Debugging
+  // debugRepaintRainbowEnabled = true;
 
   runApp(
     EasyLocalization(

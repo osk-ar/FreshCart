@@ -1,1 +1,9 @@
-{}
+{
+  "onboarding_screen_1_title": "Secure Your Data with Cloud Sync",
+  "onboarding_screen_1_desc": "Keep your supermarket's data safe and up-to-date. Our system automatically syncs all your local information with secure cloud servers, ensuring data integrity and accessibility from anywhere, at any time.",
+  "onboarding_screen_2_title": "Insightful Analytics at a Glance",
+  "onboarding_screen_2_desc": "Effortlessly track your supermarket's performance. Monitor key metrics such as daily revenue, best-selling products, and customer trends to make informed decisions and stay ahead of the competition.",
+  "onboarding_screen_3_title": "Drive Your Revenue to New Heights",
+  "onboarding_screen_3_desc": "Turn insights into income. Leverage powerful analytics to identify growth opportunities, optimize your stock, and implement strategies that directly boost your supermarket's profitability.",
+  "skip": "Skip"
+}

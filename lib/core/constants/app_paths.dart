@@ -6,4 +6,7 @@ class AppPaths {
 
   //* Assets for the app
   static const String appLogo = '$images/logo.png';
+  static const String monitorAnalytics = '$images/monitor_analytics.svg';
+  static const String stepUp = '$images/step_up.svg';
+  static const String sync = '$images/sync.svg';
 }

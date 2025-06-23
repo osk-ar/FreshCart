@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supermarket/domain/repositories/auth_repository.dart';
 
-class SplashBloc extends Bloc<SplashEvent, SplashState> {
+class SplashNavigationBloc extends Bloc<NavigationEvent, NavigationState> {
   final AuthRepository _authRepository;
-  SplashBloc(this._authRepository) : super(Initial()) {
-    on<SplashCheckAuth>((event, emit) async {
+  SplashNavigationBloc(this._authRepository) : super(Initial()) {
+    on<CheckAuth>((event, emit) async {
       emit(Loading());
 
       final isFirstTime = _authRepository.getIsFirstTime();
@@ -25,18 +25,18 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
   }
 }
 
-class SplashEvent {}
+class NavigationEvent {}
 
-class SplashCheckAuth extends SplashEvent {}
+class CheckAuth extends NavigationEvent {}
 
-class SplashState {}
+class NavigationState {}
 
-class Initial extends SplashState {}
+class Initial extends NavigationState {}
 
-class Loading extends SplashState {}
+class Loading extends NavigationState {}
 
-class FirstTimeUse extends SplashState {}
+class FirstTimeUse extends NavigationState {}
 
-class Authenticated extends SplashState {}
+class Authenticated extends NavigationState {}
 
-class Unauthenticated extends SplashState {}
+class Unauthenticated extends NavigationState {}

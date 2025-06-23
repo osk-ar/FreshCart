@@ -7,7 +7,8 @@ import "package:supermarket/data/repositories/auth_repository_impl.dart";
 import "package:supermarket/data/repositories/settings_repository_impl.dart";
 import "package:supermarket/domain/repositories/auth_repository.dart";
 import "package:supermarket/domain/repositories/settings_repository.dart";
-import "package:supermarket/presentation/blocs/splash/splash_bloc.dart";
+import "package:supermarket/presentation/blocs/boarding/boarding_navigation_cubit.dart";
+import "package:supermarket/presentation/blocs/splash/splash_navigation_bloc.dart";
 import "package:supermarket/presentation/blocs/theme/theme_cubit.dart";
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -60,7 +61,10 @@ Future<void> setupServiceLocator() async {
   serviceLocator.registerLazySingleton<ThemeCubit>(
     () => ThemeCubit(serviceLocator()),
   );
-  serviceLocator.registerLazySingleton<SplashBloc>(
-    () => SplashBloc(serviceLocator()),
+  serviceLocator.registerLazySingleton<SplashNavigationBloc>(
+    () => SplashNavigationBloc(serviceLocator()),
+  );
+  serviceLocator.registerLazySingleton<BoardingNavigationCubit>(
+    () => BoardingNavigationCubit(),
   );
 }
