@@ -10,6 +10,34 @@ class AppStrings {
   static String get onboardingTitle3 => 'onboarding_screen_3_title'.tr();
   static String get onboardingDesc3 => 'onboarding_screen_3_desc'.tr();
   static String get skip => 'skip'.tr();
+  static String get register => 'register'.tr();
+  static String get name => "name".tr();
+  static String get nameHint => "nameHint".tr();
+  static String get email => "email".tr();
+  static String get emailHint => "emailHint".tr();
+  static String get password => "password".tr();
+  static String get securePasswordHint => "securePasswordHint".tr();
+  static String get confirmPassword => "confirmPassword".tr();
+  static String get reEnterPasswordHint => "reEnterPasswordHint".tr();
+
+  static String get or => "or".tr();
+  static String get continueWithGoogle => "continueWithGoogle".tr();
+  static String get continueAsGuest => "continueAsGuest".tr();
+  static String get alreadyHaveAccount => "alreadyHaveAccount".tr();
+  static String get signIn => "signIn".tr();
+
+  static String get passwordsDoNotMatch => "passwordsDoNotMatch".tr();
+  static String get nameEmptyError => "nameEmptyError".tr();
+  static String get nameMinLengthError => "nameMinLengthError".tr();
+  static String get emailEmptyError => "emailEmptyError".tr();
+  static String get emailInvalidError => "emailInvalidError".tr();
+  static String get passwordEmptyError => "passwordEmptyError".tr();
+  static String get passwordMinLengthError => "passwordMinLengthError".tr();
+  static String get passwordLowercaseError => "passwordLowercaseError".tr();
+  static String get passwordUppercaseError => "passwordUppercaseError".tr();
+  static String get passwordDigitError => "passwordDigitError".tr();
+  static String get passwordSymbolError => "passwordSymbolError".tr();
+  static String get passwordGeneralError => "passwordGeneralError".tr();
 }
 
 // example of how to use the AppStrings class

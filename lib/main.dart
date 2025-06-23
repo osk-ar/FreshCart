@@ -5,7 +5,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:supermarket/app.dart';
 import 'package:supermarket/core/constants/app_paths.dart';
 import 'package:supermarket/core/services/dependency_injection.dart';
@@ -41,14 +40,15 @@ Future<void> main() async {
   // 6. Initialize GetIt service locator
   await setupServiceLocator();
 
-  // 7. Debugging
-  // debugRepaintRainbowEnabled = true;
+  //! 7. Debugging
+  //! debugRepaintRainbowEnabled = true;
 
   runApp(
     EasyLocalization(
-      supportedLocales: LocalizationService.supportedLocales,
       path: AppPaths.translations,
+      supportedLocales: LocalizationService.supportedLocales,
       fallbackLocale: LocalizationService.fallbackLocale,
+      startLocale: LocalizationService.fallbackLocale,
       useOnlyLangCode: LocalizationService.useOnlyLangCode,
       saveLocale: LocalizationService.saveLocale,
       child: const MyApp(),
@@ -59,7 +59,8 @@ Future<void> main() async {
 
 
 /*
-  1- Boarding is not complete
+  1- work on auth datasource and repo
+  2- finish register auth cubit and page
 
 
 

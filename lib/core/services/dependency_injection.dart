@@ -1,5 +1,6 @@
 import "package:get_it/get_it.dart";
 import "package:shared_preferences/shared_preferences.dart";
+import "package:supermarket/core/services/localization_service.dart";
 import "package:supermarket/core/services/navigation_service.dart";
 import "package:supermarket/data/datasource/auth_datasource.dart";
 import "package:supermarket/data/datasource/settings_datasource.dart";
@@ -8,6 +9,9 @@ import "package:supermarket/data/repositories/settings_repository_impl.dart";
 import "package:supermarket/domain/repositories/auth_repository.dart";
 import "package:supermarket/domain/repositories/settings_repository.dart";
 import "package:supermarket/presentation/blocs/boarding/boarding_navigation_cubit.dart";
+import "package:supermarket/presentation/blocs/localization/localization_cubit.dart";
+import "package:supermarket/presentation/blocs/register/register_auth_bloc.dart";
+import "package:supermarket/presentation/blocs/register/register_ui_cubit.dart";
 import "package:supermarket/presentation/blocs/splash/splash_navigation_bloc.dart";
 import "package:supermarket/presentation/blocs/theme/theme_cubit.dart";
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -23,7 +27,7 @@ Future<void> setupServiceLocator() async {
   // ####################
   //* ## EXTERNAL LIBS
   // ####################
-  serviceLocator.registerSingletonAsync<SharedPreferences>(
+  serviceLocator.registerSingletonAsync(
     () async => await SharedPreferences.getInstance(),
   );
   serviceLocator.registerSingleton<FlutterSecureStorage>(secureStorage);
@@ -31,17 +35,18 @@ Future<void> setupServiceLocator() async {
   // ####################
   //* ## Services
   // ####################
-  serviceLocator.registerLazySingleton<NavigationService>(
-    () => NavigationService(),
+  serviceLocator.registerLazySingleton(() => NavigationService());
+  serviceLocator.registerLazySingleton(
+    () => LocalizationService(serviceLocator()),
   );
 
   // ####################
   //* ## Data Sources
   // ####################
-  serviceLocator.registerLazySingleton<SettingsDatasource>(
-    () => SettingsDatasource(serviceLocator<SharedPreferences>()),
+  serviceLocator.registerLazySingleton(
+    () => SettingsDatasource(serviceLocator()),
   );
-  serviceLocator.registerLazySingleton<AuthDatasource>(
+  serviceLocator.registerLazySingleton(
     () => AuthDatasource(serviceLocator(), serviceLocator()),
   );
 
@@ -58,13 +63,12 @@ Future<void> setupServiceLocator() async {
   // ####################
   //* ## Blocs & Cubits
   // ####################
-  serviceLocator.registerLazySingleton<ThemeCubit>(
-    () => ThemeCubit(serviceLocator()),
-  );
-  serviceLocator.registerLazySingleton<SplashNavigationBloc>(
+  serviceLocator.registerLazySingleton(() => ThemeCubit(serviceLocator()));
+  serviceLocator.registerFactory(() => LocalizationCubit(serviceLocator()));
+  serviceLocator.registerLazySingleton(
     () => SplashNavigationBloc(serviceLocator()),
   );
-  serviceLocator.registerLazySingleton<BoardingNavigationCubit>(
-    () => BoardingNavigationCubit(),
-  );
+  serviceLocator.registerLazySingleton(() => BoardingNavigationCubit());
+  serviceLocator.registerFactory(() => RegisterUiCubit());
+  serviceLocator.registerFactory(() => RegisterAuthBloc());
 }

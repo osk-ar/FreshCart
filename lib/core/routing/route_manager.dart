@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supermarket/core/constants/app_routes.dart';
 import 'package:supermarket/presentation/pages/boarding/boarding_page.dart';
+import 'package:supermarket/presentation/pages/register/register_page.dart';
 import 'package:supermarket/presentation/pages/splash/splash_page.dart';
 
 class RouteManager {
@@ -12,6 +13,8 @@ class RouteManager {
         return MaterialPageRoute(builder: (_) => const SplashPage());
       case AppRoutes.boarding:
         return MaterialPageRoute(builder: (_) => const BoardingPage());
+      case AppRoutes.register:
+        return MaterialPageRoute(builder: (_) => const RegisterPage());
       default:
         return MaterialPageRoute(builder: (_) => notFoundScreen());
     }

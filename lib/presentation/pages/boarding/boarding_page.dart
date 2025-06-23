@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supermarket/core/services/dependency_injection.dart';
 import 'package:supermarket/presentation/blocs/boarding/boarding_navigation_cubit.dart';
+import 'package:supermarket/presentation/blocs/localization/localization_cubit.dart';
 import 'package:supermarket/presentation/pages/boarding/layouts/boarding_phone.dart';
 import 'package:supermarket/presentation/widgets/adaptive_layout.dart';
 
@@ -10,8 +11,13 @@ class BoardingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => serviceLocator<BoardingNavigationCubit>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => serviceLocator<LocalizationCubit>()),
+        BlocProvider(
+          create: (context) => serviceLocator<BoardingNavigationCubit>(),
+        ),
+      ],
       child: const AdaptiveLayout(
         phoneLayout: BoardingPhone(),
         desktopLayout: BoardingPhone(),

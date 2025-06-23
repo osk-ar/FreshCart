@@ -6,9 +6,11 @@ import 'package:supermarket/core/constants/app_routes.dart';
 import 'package:supermarket/core/constants/app_strings.dart';
 import 'package:supermarket/core/utils/extensions.dart';
 import 'package:supermarket/presentation/blocs/boarding/boarding_navigation_cubit.dart';
+import 'package:supermarket/presentation/blocs/localization/localization_cubit.dart';
 import 'package:supermarket/presentation/pages/boarding/widgets/boarding_content_page.dart';
 import 'package:supermarket/presentation/pages/boarding/widgets/boarding_dot_indicator.dart';
 import 'package:supermarket/presentation/pages/boarding/widgets/boarding_navigation_button.dart';
+import 'package:supermarket/presentation/widgets/localization_button.dart';
 
 class BoardingPhone extends StatefulWidget {
   const BoardingPhone({super.key});
@@ -36,6 +38,14 @@ class _BoardingPhoneState extends State<BoardingPhone> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: BlocBuilder<LocalizationCubit, Locale>(
+          builder: (context, state) {
+            return LocalizationButton(
+              onPressed: () => context.read<LocalizationCubit>().switchLocale(),
+              languageCode: state.languageCode,
+            );
+          },
+        ),
         actions: [
           TextButton(
             onPressed: () => context.pushReplacementNamed(AppRoutes.register),

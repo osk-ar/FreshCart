@@ -1,6 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supermarket/domain/repositories/auth_repository.dart';
 
+part 'package:supermarket/presentation/blocs/splash/events/splash_navigation_event.dart';
+part 'package:supermarket/presentation/blocs/splash/states/splash_navigation_state.dart';
+
 class SplashNavigationBloc extends Bloc<NavigationEvent, NavigationState> {
   final AuthRepository _authRepository;
   SplashNavigationBloc(this._authRepository) : super(Initial()) {
@@ -24,19 +27,3 @@ class SplashNavigationBloc extends Bloc<NavigationEvent, NavigationState> {
     });
   }
 }
-
-class NavigationEvent {}
-
-class CheckAuth extends NavigationEvent {}
-
-class NavigationState {}
-
-class Initial extends NavigationState {}
-
-class Loading extends NavigationState {}
-
-class FirstTimeUse extends NavigationState {}
-
-class Authenticated extends NavigationState {}
-
-class Unauthenticated extends NavigationState {}
