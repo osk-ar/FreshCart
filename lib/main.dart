@@ -65,5 +65,6 @@ Future<void> main() async {
 
 
 
-
+  * latest added is Failures and mapper extension on Exception
+  * complete the firebase auth datasource on next session
  */

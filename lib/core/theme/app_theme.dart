@@ -172,9 +172,9 @@ class AppTheme {
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12.0.r),
-        borderSide: const BorderSide(color: AppColors.darkOnError),
+        borderSide: const BorderSide(color: AppColors.darkError),
       ),
-      errorStyle: const TextStyle(color: AppColors.darkOnError),
+      errorStyle: const TextStyle(color: AppColors.darkError),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(

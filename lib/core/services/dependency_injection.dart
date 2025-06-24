@@ -1,12 +1,14 @@
 import "package:get_it/get_it.dart";
+import "package:google_sign_in/google_sign_in.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import "package:supermarket/core/services/localization_service.dart";
 import "package:supermarket/core/services/navigation_service.dart";
-import "package:supermarket/data/datasource/auth_datasource.dart";
-import "package:supermarket/data/datasource/settings_datasource.dart";
-import "package:supermarket/data/repositories/auth_repository_impl.dart";
+import "package:supermarket/data/datasource/local/auth_local_datasource.dart";
+import "package:supermarket/data/datasource/local/settings_local_datasource.dart";
+import "package:supermarket/data/datasource/network/auth_firebase_datasource.dart";
+import "package:supermarket/data/repositories/auth_local_repository_impl.dart";
 import "package:supermarket/data/repositories/settings_repository_impl.dart";
-import "package:supermarket/domain/repositories/auth_repository.dart";
+import "package:supermarket/domain/repositories/auth_local_repository.dart";
 import "package:supermarket/domain/repositories/settings_repository.dart";
 import "package:supermarket/presentation/blocs/boarding/boarding_navigation_cubit.dart";
 import "package:supermarket/presentation/blocs/localization/localization_cubit.dart";
@@ -31,6 +33,7 @@ Future<void> setupServiceLocator() async {
     () async => await SharedPreferences.getInstance(),
   );
   serviceLocator.registerSingleton<FlutterSecureStorage>(secureStorage);
+  serviceLocator.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn());
 
   // ####################
   //* ## Services
@@ -44,10 +47,13 @@ Future<void> setupServiceLocator() async {
   //* ## Data Sources
   // ####################
   serviceLocator.registerLazySingleton(
-    () => SettingsDatasource(serviceLocator()),
+    () => SettingsLocalDatasource(serviceLocator()),
   );
   serviceLocator.registerLazySingleton(
-    () => AuthDatasource(serviceLocator(), serviceLocator()),
+    () => AuthLocalDatasource(serviceLocator()),
+  );
+  serviceLocator.registerLazySingleton(
+    () => AuthFirebaseDatasource(serviceLocator()),
   );
 
   // ####################
@@ -56,8 +62,8 @@ Future<void> setupServiceLocator() async {
   serviceLocator.registerLazySingleton<SettingsRepository>(
     () => SettingsRepositoryImpl(serviceLocator()),
   );
-  serviceLocator.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(serviceLocator()),
+  serviceLocator.registerLazySingleton<AuthLocalRepository>(
+    () => AuthLocalRepositoryImpl(serviceLocator()),
   );
 
   // ####################

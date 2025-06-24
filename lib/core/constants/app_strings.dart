@@ -38,6 +38,20 @@ class AppStrings {
   static String get passwordDigitError => "passwordDigitError".tr();
   static String get passwordSymbolError => "passwordSymbolError".tr();
   static String get passwordGeneralError => "passwordGeneralError".tr();
+
+  static String get serverFailure => 'server_failure'.tr();
+  static String get networkFailure => 'network_failure'.tr();
+  static String get invalidCredentialFailure =>
+      'invalid_credential_failure'.tr();
+  static String get emailInUseFailure => 'email_in_use_failure'.tr();
+  static String get invalidEmailFailure => 'invalid_email_failure'.tr();
+  static String get weakPasswordFailure => 'weak_password_failure'.tr();
+  static String get requiresRecentLoginFailure =>
+      'requires_recent_login_failure'.tr();
+  static String get tooManyRequestsFailure => 'too_many_requests_failure'.tr();
+  static String get userDisabledFailure => 'user_disabled_failure'.tr();
+  static String get permissionDeniedFailure => 'permission_denied_failure'.tr();
+  static String get notFoundFailure => 'not_found_failure'.tr();
 }
 
 // example of how to use the AppStrings class

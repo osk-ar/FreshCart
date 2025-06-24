@@ -32,5 +32,16 @@
   "passwordUppercaseError": "Password must contain at least one uppercase letter.",
   "passwordDigitError": "Password must contain at least one digit.",
   "passwordSymbolError": "Password must contain at least one symbol (e.g., !@#$%^&*).",
-  "passwordGeneralError": "Password does not meet all criteria."
+  "passwordGeneralError": "Password does not meet all criteria.",
+  "server_failure": "An unexpected server error occurred. Please try again later.",
+  "network_failure": "No internet connection. Please check your connection and try again.",
+  "invalid_credential_failure": "Invalid email or password. Please try again.",
+  "email_in_use_failure": "This email is already in use by another account.",
+  "invalid_email_failure": "The email address is badly formatted.",
+  "weak_password_failure": "The password is too weak.",
+  "requires_recent_login_failure": "This operation is sensitive and requires recent authentication. Please sign out and sign in again.",
+  "too_many_requests_failure": "We have blocked all requests from this device due to unusual activity. Try again later.",
+  "user_disabled_failure": "This user account has been disabled.",
+  "permission_denied_failure": "You do not have permission to perform this action.",
+  "not_found_failure": "The requested item was not found."
 }

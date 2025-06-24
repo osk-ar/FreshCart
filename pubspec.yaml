@@ -26,6 +26,7 @@ dependencies:
   firebase_messaging: ^15.2.7
   firebase_analytics: ^11.5.0
   firebase_crashlytics: ^4.3.7
+  google_sign_in: ^6.3.0
   # Cache
   shared_preferences: ^2.5.3
   flutter_secure_storage: ^9.2.4

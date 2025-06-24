@@ -1,11 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:supermarket/domain/repositories/auth_repository.dart';
+import 'package:supermarket/domain/repositories/auth_local_repository.dart';
 
 part 'package:supermarket/presentation/blocs/splash/events/splash_navigation_event.dart';
 part 'package:supermarket/presentation/blocs/splash/states/splash_navigation_state.dart';
 
 class SplashNavigationBloc extends Bloc<NavigationEvent, NavigationState> {
-  final AuthRepository _authRepository;
+  final AuthLocalRepository _authRepository;
   SplashNavigationBloc(this._authRepository) : super(Initial()) {
     on<CheckAuth>((event, emit) async {
       emit(Loading());
@@ -18,12 +18,13 @@ class SplashNavigationBloc extends Bloc<NavigationEvent, NavigationState> {
         return;
       }
 
-      final token = await _authRepository.getFirebaseToken();
-      if (token != null && token.isNotEmpty) {
-        emit(Authenticated());
-      } else {
-        emit(Unauthenticated());
-      }
+      //todo update to check if user is authenticated
+      // final token = await _authRepository.getFirebaseToken();
+      // if (token != null && token.isNotEmpty) {
+      //   emit(Authenticated());
+      // } else {
+      //   emit(Unauthenticated());
+      // }
     });
   }
 }
