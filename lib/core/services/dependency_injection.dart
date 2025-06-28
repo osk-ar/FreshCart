@@ -2,17 +2,22 @@ import "package:get_it/get_it.dart";
 import "package:google_sign_in/google_sign_in.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import "package:supermarket/core/services/localization_service.dart";
+import "package:supermarket/core/services/memory_cache_service.dart";
 import "package:supermarket/core/services/navigation_service.dart";
 import "package:supermarket/data/datasource/local/auth_local_datasource.dart";
 import "package:supermarket/data/datasource/local/settings_local_datasource.dart";
-import "package:supermarket/data/datasource/network/auth_firebase_datasource.dart";
+import "package:supermarket/data/datasource/remote/auth_remote_datasource.dart";
 import "package:supermarket/data/repositories/auth_local_repository_impl.dart";
+import "package:supermarket/data/repositories/auth_remote_repository_impl.dart";
 import "package:supermarket/data/repositories/settings_repository_impl.dart";
 import "package:supermarket/domain/repositories/auth_local_repository.dart";
+import "package:supermarket/domain/repositories/auth_remote_repository.dart";
 import "package:supermarket/domain/repositories/settings_repository.dart";
 import "package:supermarket/presentation/blocs/boarding/boarding_navigation_cubit.dart";
 import "package:supermarket/presentation/blocs/localization/localization_cubit.dart";
-import "package:supermarket/presentation/blocs/register/register_auth_bloc.dart";
+import "package:supermarket/presentation/blocs/login/login_auth_cubit.dart";
+import "package:supermarket/presentation/blocs/login/login_ui_cubit.dart";
+import "package:supermarket/presentation/blocs/register/register_auth_cubit.dart";
 import "package:supermarket/presentation/blocs/register/register_ui_cubit.dart";
 import "package:supermarket/presentation/blocs/splash/splash_navigation_bloc.dart";
 import "package:supermarket/presentation/blocs/theme/theme_cubit.dart";
@@ -42,6 +47,7 @@ Future<void> setupServiceLocator() async {
   serviceLocator.registerLazySingleton(
     () => LocalizationService(serviceLocator()),
   );
+  serviceLocator.registerLazySingleton(() => MemoryCacheService());
 
   // ####################
   //* ## Data Sources
@@ -53,7 +59,7 @@ Future<void> setupServiceLocator() async {
     () => AuthLocalDatasource(serviceLocator()),
   );
   serviceLocator.registerLazySingleton(
-    () => AuthFirebaseDatasource(serviceLocator()),
+    () => AuthRemoteDatasource(serviceLocator()),
   );
 
   // ####################
@@ -65,16 +71,25 @@ Future<void> setupServiceLocator() async {
   serviceLocator.registerLazySingleton<AuthLocalRepository>(
     () => AuthLocalRepositoryImpl(serviceLocator()),
   );
+  serviceLocator.registerLazySingleton<AuthRemoteRepository>(
+    () => AuthRemoteRepositoryImpl(serviceLocator(), serviceLocator()),
+  );
 
   // ####################
   //* ## Blocs & Cubits
   // ####################
   serviceLocator.registerLazySingleton(() => ThemeCubit(serviceLocator()));
   serviceLocator.registerFactory(() => LocalizationCubit(serviceLocator()));
+
   serviceLocator.registerLazySingleton(
     () => SplashNavigationBloc(serviceLocator()),
   );
+
   serviceLocator.registerLazySingleton(() => BoardingNavigationCubit());
+
   serviceLocator.registerFactory(() => RegisterUiCubit());
-  serviceLocator.registerFactory(() => RegisterAuthBloc());
+  serviceLocator.registerFactory(() => RegisterAuthCubit(serviceLocator()));
+
+  serviceLocator.registerFactory(() => LoginUiCubit());
+  serviceLocator.registerFactory(() => LoginAuthCubit(serviceLocator()));
 }

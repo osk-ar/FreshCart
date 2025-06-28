@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:supermarket/core/constants/app_routes.dart';
+import 'package:supermarket/core/routing/app_routes.dart';
 import 'package:supermarket/core/routing/route_manager.dart';
 import 'package:supermarket/core/services/dependency_injection.dart';
 import 'package:supermarket/core/services/navigation_service.dart';
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
                 supportedLocales: context.supportedLocales,
                 locale: context.locale,
                 // navigation
-                initialRoute: AppRoutes.splash,
+                initialRoute: AppRoutes.login,
                 onUnknownRoute: RouteManager.onUnknownRoute,
                 onGenerateRoute: RouteManager.onGenerateRoute,
                 navigatorKey: serviceLocator<NavigationService>().navigatorKey,

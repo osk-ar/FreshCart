@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supermarket/core/constants/app_paths.dart';
-import 'package:supermarket/core/constants/app_routes.dart';
+import 'package:supermarket/core/routing/app_routes.dart';
 import 'package:supermarket/core/utils/extensions.dart';
 import 'package:supermarket/presentation/blocs/splash/splash_navigation_bloc.dart';
 

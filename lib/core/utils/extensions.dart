@@ -35,7 +35,13 @@ extension NavigationExtension on BuildContext {
   }
 }
 
-extension ExceptionExtension on Exception {
+extension SnackBarExtension on BuildContext {
+  void message(String message) {
+    ScaffoldMessenger.of(this).showSnackBar(SnackBar(content: Text(message)));
+  }
+}
+
+extension ExceptionExtension on Object? {
   Failure mapExceptionToFailure([StackTrace? stackTrace]) {
     if (this is FirebaseException) {
       switch ((this as FirebaseException).code) {

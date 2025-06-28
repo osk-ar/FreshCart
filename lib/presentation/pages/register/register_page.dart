@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supermarket/core/services/dependency_injection.dart';
 import 'package:supermarket/presentation/blocs/localization/localization_cubit.dart';
-import 'package:supermarket/presentation/blocs/register/register_auth_bloc.dart';
+import 'package:supermarket/presentation/blocs/register/register_auth_cubit.dart';
 import 'package:supermarket/presentation/blocs/register/register_ui_cubit.dart';
 import 'package:supermarket/presentation/pages/register/layouts/register_phone.dart';
 import 'package:supermarket/presentation/widgets/adaptive_layout.dart';
@@ -15,7 +15,7 @@ class RegisterPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => serviceLocator<RegisterUiCubit>()),
-        BlocProvider(create: (context) => serviceLocator<RegisterAuthBloc>()),
+        BlocProvider(create: (context) => serviceLocator<RegisterAuthCubit>()),
         BlocProvider(create: (context) => serviceLocator<LocalizationCubit>()),
       ],
       child: AdaptiveLayout(

@@ -11,6 +11,7 @@ class AppStrings {
   static String get onboardingDesc3 => 'onboarding_screen_3_desc'.tr();
   static String get skip => 'skip'.tr();
   static String get register => 'register'.tr();
+  static String get login => 'login'.tr();
   static String get name => "name".tr();
   static String get nameHint => "nameHint".tr();
   static String get email => "email".tr();
@@ -52,6 +53,8 @@ class AppStrings {
   static String get userDisabledFailure => 'user_disabled_failure'.tr();
   static String get permissionDeniedFailure => 'permission_denied_failure'.tr();
   static String get notFoundFailure => 'not_found_failure'.tr();
+  static String get dontHaveAnAccount => "dontHaveAnAccount".tr();
+  static String get signUp => "signUp".tr();
 }
 
 // example of how to use the AppStrings class

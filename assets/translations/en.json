@@ -43,5 +43,7 @@
   "too_many_requests_failure": "We have blocked all requests from this device due to unusual activity. Try again later.",
   "user_disabled_failure": "This user account has been disabled.",
   "permission_denied_failure": "You do not have permission to perform this action.",
-  "not_found_failure": "The requested item was not found."
+  "not_found_failure": "The requested item was not found.",
+  "dontHaveAnAccount": "Don't have an account?",
+  "signUp": "Sign up"
 }

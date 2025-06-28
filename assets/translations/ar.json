@@ -43,5 +43,7 @@
   "too_many_requests_failure": "لقد حظرنا جميع الطلبات من هذا الجهاز بسبب نشاط غير عادي. حاول مرة أخرى في وقت لاحق.",
   "user_disabled_failure": "تم تعطيل حساب المستخدم هذا.",
   "permission_denied_failure": "ليس لديك إذن لتنفيذ هذا الإجراء.",
-  "not_found_failure": "لم يتم العثور على العنصر المطلوب."
+  "not_found_failure": "لم يتم العثور على العنصر المطلوب.",
+  "dontHaveAnAccount": "ليس لديك حساب؟",
+  "signUp": "انشاء حساب"
 }

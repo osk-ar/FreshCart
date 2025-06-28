@@ -1,19 +1,19 @@
-part of 'package:supermarket/presentation/blocs/register/register_auth_bloc.dart';
+part of 'package:supermarket/presentation/blocs/register/register_auth_cubit.dart';
 
-class AuthState {}
+abstract class RegisterAuthState {}
 
-class AuthInitial extends AuthState {}
+class RegisterAuthInitial extends RegisterAuthState {}
 
-class RegisterAuthLoading extends AuthState {}
+class RegisterCredsLoading extends RegisterAuthState {}
 
-class GoogleAuthLoading extends AuthState {}
+class RegisterGoogleLoading extends RegisterAuthState {}
 
-class GuestAuthLoading extends AuthState {}
+class RegisterGuestLoading extends RegisterAuthState {}
 
-class AuthSuccess extends AuthState {}
+class RegisterSuccess extends RegisterAuthState {}
 
-class AuthFailure extends AuthState {
+class RegisterFailure extends RegisterAuthState {
   final String error;
 
-  AuthFailure(this.error);
+  RegisterFailure(this.error);
 }

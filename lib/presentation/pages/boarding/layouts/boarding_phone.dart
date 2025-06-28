@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:supermarket/core/constants/app_paths.dart';
-import 'package:supermarket/core/constants/app_routes.dart';
+import 'package:supermarket/core/routing/app_routes.dart';
 import 'package:supermarket/core/constants/app_strings.dart';
 import 'package:supermarket/core/utils/extensions.dart';
 import 'package:supermarket/presentation/blocs/boarding/boarding_navigation_cubit.dart';
