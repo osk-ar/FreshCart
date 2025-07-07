@@ -26,10 +26,20 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 final GetIt serviceLocator = GetIt.instance;
 
 Future<void> setupServiceLocator() async {
-  const AndroidOptions androidOptions = AndroidOptions(
+  const AndroidOptions aOptions = AndroidOptions(
     encryptedSharedPreferences: true,
   );
-  const secureStorage = FlutterSecureStorage(aOptions: androidOptions);
+  const WindowsOptions wOptions = WindowsOptions(
+    useBackwardCompatibility: true,
+  );
+  const MacOsOptions mOptions = MacOsOptions(useDataProtectionKeyChain: true);
+  const IOSOptions iOptions = IOSOptions();
+  const secureStorage = FlutterSecureStorage(
+    aOptions: aOptions,
+    iOptions: iOptions,
+    wOptions: wOptions,
+    mOptions: mOptions,
+  );
 
   // ####################
   //* ## EXTERNAL LIBS
@@ -56,7 +66,7 @@ Future<void> setupServiceLocator() async {
     () => SettingsLocalDatasource(serviceLocator()),
   );
   serviceLocator.registerLazySingleton(
-    () => AuthLocalDatasource(serviceLocator()),
+    () => AuthLocalDatasource(serviceLocator(), serviceLocator()),
   );
   serviceLocator.registerLazySingleton(
     () => AuthRemoteDatasource(serviceLocator()),
@@ -69,7 +79,7 @@ Future<void> setupServiceLocator() async {
     () => SettingsRepositoryImpl(serviceLocator()),
   );
   serviceLocator.registerLazySingleton<AuthLocalRepository>(
-    () => AuthLocalRepositoryImpl(serviceLocator()),
+    () => AuthLocalRepositoryImpl(serviceLocator(), serviceLocator()),
   );
   serviceLocator.registerLazySingleton<AuthRemoteRepository>(
     () => AuthRemoteRepositoryImpl(serviceLocator(), serviceLocator()),
@@ -82,14 +92,18 @@ Future<void> setupServiceLocator() async {
   serviceLocator.registerFactory(() => LocalizationCubit(serviceLocator()));
 
   serviceLocator.registerLazySingleton(
-    () => SplashNavigationBloc(serviceLocator()),
+    () => SplashNavigationBloc(serviceLocator(), serviceLocator()),
   );
 
   serviceLocator.registerLazySingleton(() => BoardingNavigationCubit());
 
   serviceLocator.registerFactory(() => RegisterUiCubit());
-  serviceLocator.registerFactory(() => RegisterAuthCubit(serviceLocator()));
+  serviceLocator.registerFactory(
+    () => RegisterAuthCubit(serviceLocator(), serviceLocator()),
+  );
 
   serviceLocator.registerFactory(() => LoginUiCubit());
-  serviceLocator.registerFactory(() => LoginAuthCubit(serviceLocator()));
+  serviceLocator.registerFactory(
+    () => LoginAuthCubit(serviceLocator(), serviceLocator()),
+  );
 }

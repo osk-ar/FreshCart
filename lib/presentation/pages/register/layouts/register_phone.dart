@@ -257,6 +257,10 @@ class _RegisterPhoneState extends State<RegisterPhone> {
                   switch (state) {
                     case RegisterSuccess():
                       context.message("Success");
+                      context.pushAndRemoveUntil(
+                        AppRoutes.home,
+                        (route) => false,
+                      );
                       break;
                     case RegisterFailure():
                       context.message("Failure: ${state.error}");

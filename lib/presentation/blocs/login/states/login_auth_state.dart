@@ -8,6 +8,8 @@ class LoginCredsLoading extends LoginAuthState {}
 
 class LoginGoogleLoading extends LoginAuthState {}
 
+class LoginGuestLoading extends LoginAuthState {}
+
 class LoginSuccess extends LoginAuthState {}
 
 class LoginFailure extends LoginAuthState {

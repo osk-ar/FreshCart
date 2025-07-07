@@ -48,7 +48,7 @@ class _BoardingPhoneState extends State<BoardingPhone> {
         ),
         actions: [
           TextButton(
-            onPressed: () => context.pushReplacementNamed(AppRoutes.register),
+            onPressed: () => context.pushNamed(AppRoutes.register),
             child: Text(
               AppStrings.skip,
               style: context.theme.textTheme.titleMedium?.copyWith(
@@ -61,7 +61,7 @@ class _BoardingPhoneState extends State<BoardingPhone> {
       body: BlocConsumer<BoardingNavigationCubit, int>(
         listener: (context, pageIndex) {
           if (pageIndex > pageCount - 1) {
-            context.pushReplacementNamed(AppRoutes.register);
+            context.pushNamed(AppRoutes.register);
           } else {
             controller.animateToPage(
               pageIndex,

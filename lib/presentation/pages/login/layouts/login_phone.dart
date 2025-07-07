@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart' as e_loc;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -153,11 +151,14 @@ class _LoginPhoneState extends State<LoginPhone> {
                   switch (state) {
                     case LoginSuccess():
                       context.message("Success");
+                      context.pushAndRemoveUntil(
+                        AppRoutes.home,
+                        (route) => false,
+                      );
                       break;
                     case LoginFailure():
-                      context.message("Failure: ${state.error}");
+                      context.message(state.error);
                       break;
-                    default:
                   }
                 },
                 builder: (context, state) {
@@ -188,8 +189,7 @@ class _LoginPhoneState extends State<LoginPhone> {
               ),
               SizedBox(height: 8.h),
               TextButton(
-                onPressed: () => log("Continue as Guest Not Implemented yet"),
-                //todo add guest auth functionality
+                onPressed: () => context.read<LoginAuthCubit>().guestLogin(),
                 child: Text(
                   AppStrings.continueAsGuest,
                   style: context.theme.textTheme.titleSmall?.copyWith(

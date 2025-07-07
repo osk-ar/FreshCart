@@ -8,5 +8,6 @@ abstract class AuthRemoteRepository {
     String name,
   );
   Future<AppUser?> loginWithEmailAndPassword(String email, String password);
+  Future<bool> isAuthenticated();
   Future<void> signOut();
 }

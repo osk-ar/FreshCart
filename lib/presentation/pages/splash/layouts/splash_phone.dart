@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:supermarket/core/constants/app_paths.dart';
 import 'package:supermarket/core/routing/app_routes.dart';
 import 'package:supermarket/core/utils/extensions.dart';
@@ -17,15 +19,21 @@ class SplashPhone extends StatelessWidget {
             case FirstTimeUse():
               context.pushReplacementNamed(AppRoutes.boarding);
               break;
-            case Authenticated():
-              context.pushReplacementNamed(AppRoutes.home);
-              break;
             case Unauthenticated():
               context.pushReplacementNamed(AppRoutes.login);
               break;
+            case Authenticated():
+              context.pushReplacementNamed(AppRoutes.home);
+              break;
           }
         },
-        child: Center(child: Image.asset(AppPaths.appLogo)),
+        child: Center(
+          child: SvgPicture.asset(
+            AppPaths.appLogo,
+            height: 156.r,
+            width: 156.r,
+          ),
+        ),
       ),
     );
   }

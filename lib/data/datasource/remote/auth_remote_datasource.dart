@@ -76,6 +76,10 @@ class AuthRemoteDatasource {
     }
   }
 
+  Future<bool> isAuthenticated() async {
+    return _firebaseAuth.currentUser != null;
+  }
+
   Future<void> signOut() async {
     try {
       await _firebaseAuth.signOut();

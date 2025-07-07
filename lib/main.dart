@@ -9,6 +9,7 @@ import 'package:supermarket/core/constants/app_paths.dart';
 import 'package:supermarket/core/services/dependency_injection.dart';
 import 'package:supermarket/core/services/localization_service.dart';
 import 'package:supermarket/firebase_options.dart';
+// import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 Future<void> main() async {
   // 1. Ensure Flutter bindings are initialized
@@ -30,7 +31,6 @@ Future<void> main() async {
   FlutterError.onError = (errorDetails) {
     FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
   };
-  // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
   PlatformDispatcher.instance.onError = (error, stack) {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
@@ -40,7 +40,8 @@ Future<void> main() async {
   await setupServiceLocator();
 
   //! 7. Debugging
-  //! debugRepaintRainbowEnabled = true;
+  //* debugRepaintRainbowEnabled = true;
+  // FlutterNativeSplash.preserve(widgetsBinding: WidgetsBinding.instance);
 
   runApp(
     EasyLocalization(
@@ -64,6 +65,21 @@ Future<void> main() async {
 
 
 
-  * latest added is Failures and mapper extension on Exception
+  * navigate to home from login and register
   * complete the firebase auth datasource on next session
+  * latest added is splash navigation, guest auth, logo, local db datasource
+ */
+
+
+
+/*
+SQFLITE:
+
+Windows 
+Should work as is in debug mode (sqlite3.dll is bundled).
+
+In release mode, add sqlite3.dll in same folder as your executable.
+
+sqfliteFfiInit is provided as an implementation reference for loading the sqlite library. Please look at sqlite3 if you want to override the behavior.
+
  */

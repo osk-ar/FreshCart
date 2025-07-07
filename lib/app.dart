@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
                 supportedLocales: context.supportedLocales,
                 locale: context.locale,
                 // navigation
-                initialRoute: AppRoutes.login,
+                initialRoute: AppRoutes.splash,
                 onUnknownRoute: RouteManager.onUnknownRoute,
                 onGenerateRoute: RouteManager.onGenerateRoute,
                 navigatorKey: serviceLocator<NavigationService>().navigatorKey,

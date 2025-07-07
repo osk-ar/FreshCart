@@ -61,6 +61,11 @@ class AuthRemoteRepositoryImpl implements AuthRemoteRepository {
   }
 
   @override
+  Future<bool> isAuthenticated() async {
+    return await _authRemoteDatasource.isAuthenticated();
+  }
+
+  @override
   Future<void> signOut() async {
     await _authRemoteDatasource.signOut();
     _memoryCacheService.invalidate(AppKeys.userCache);
