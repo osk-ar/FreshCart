@@ -1,29 +1,132 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:supermarket/core/constants/app_paths.dart';
+import 'package:supermarket/core/routing/app_routes.dart';
+import 'package:supermarket/core/constants/app_strings.dart';
+import 'package:supermarket/core/utils/extensions.dart';
+import 'package:supermarket/presentation/blocs/boarding/boarding_navigation_cubit.dart';
+import 'package:supermarket/presentation/blocs/localization/localization_cubit.dart';
+import 'package:supermarket/presentation/pages/boarding/widgets/boarding_content_page.dart';
+import 'package:supermarket/presentation/pages/boarding/widgets/boarding_dot_indicator.dart';
+import 'package:supermarket/presentation/pages/boarding/widgets/boarding_navigation_button.dart';
+import 'package:supermarket/presentation/widgets/localization_button.dart';
 
-class BoardingPhone extends StatelessWidget {
+class BoardingPhone extends StatefulWidget {
   const BoardingPhone({super.key});
+
+  @override
+  State<BoardingPhone> createState() => _BoardingPhoneState();
+}
+
+class _BoardingPhoneState extends State<BoardingPhone> {
+  late final PageController controller;
+  final int pageCount = 3;
+  @override
+  void initState() {
+    controller = PageController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Boarding Page'), centerTitle: true),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Welcome to the Boarding Page!',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Navigate to the next page or perform an action
-              },
-              child: const Text('Get Started'),
-            ),
-          ],
+      appBar: AppBar(
+        leading: BlocBuilder<LocalizationCubit, Locale>(
+          builder: (context, state) {
+            return LocalizationButton(
+              onPressed: () => context.read<LocalizationCubit>().switchLocale(),
+              languageCode: state.languageCode,
+            );
+          },
         ),
+        actions: [
+          TextButton(
+            onPressed: () => context.pushNamed(AppRoutes.register),
+            child: Text(
+              AppStrings.skip,
+              style: context.theme.textTheme.titleMedium?.copyWith(
+                color: context.theme.primaryColor,
+              ),
+            ),
+          ),
+        ],
+      ),
+      body: BlocConsumer<BoardingNavigationCubit, int>(
+        listener: (context, pageIndex) {
+          if (pageIndex > pageCount - 1) {
+            context.pushNamed(AppRoutes.register);
+          } else {
+            controller.animateToPage(
+              pageIndex,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            );
+          }
+        },
+        builder: (context, pageIndex) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            spacing: 24.h,
+            children: [
+              Flexible(
+                child: PageView(
+                  controller: controller,
+                  physics: NeverScrollableScrollPhysics(),
+                  children: [
+                    BoardingContentPage(
+                      assetName: AppPaths.sync,
+                      title: AppStrings.onboardingTitle1,
+                      description: AppStrings.onboardingDesc1,
+                    ),
+                    BoardingContentPage(
+                      assetName: AppPaths.monitorAnalytics,
+                      title: AppStrings.onboardingTitle2,
+                      description: AppStrings.onboardingDesc2,
+                    ),
+                    BoardingContentPage(
+                      assetName: AppPaths.stepUp,
+                      title: AppStrings.onboardingTitle3,
+                      description: AppStrings.onboardingDesc3,
+                    ),
+                  ],
+                ),
+              ),
+
+              //* navigation row
+              Padding(
+                padding: EdgeInsets.only(left: 12.w, right: 12.w, bottom: 24.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    BoardingDotIndicator(
+                      controller: controller,
+                      pageCount: pageCount,
+                      onDotClicked:
+                          (index) => context
+                              .read<BoardingNavigationCubit>()
+                              .goToPage(index),
+                    ),
+                    BoardingNavigationButton(
+                      pageIndex: pageIndex,
+                      pageCount: pageCount,
+                      onPressed:
+                          () => context
+                              .read<BoardingNavigationCubit>()
+                              .nextPage(pageCount),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

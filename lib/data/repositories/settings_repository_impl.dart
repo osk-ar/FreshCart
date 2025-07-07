@@ -1,8 +1,8 @@
-import 'package:supermarket/data/datasource/settings_datasource.dart';
+import 'package:supermarket/data/datasource/local/settings_local_datasource.dart';
 import 'package:supermarket/domain/repositories/settings_repository.dart';
 
 class SettingsRepositoryImpl implements SettingsRepository {
-  final SettingsDatasource _settingsDatasource;
+  final SettingsLocalDatasource _settingsDatasource;
 
   SettingsRepositoryImpl(this._settingsDatasource);
 
