@@ -9,4 +9,5 @@ class AppPaths {
   static const String monitorAnalytics = '$images/monitor_analytics.svg';
   static const String stepUp = '$images/step_up.svg';
   static const String sync = '$images/sync.svg';
+  static const String empty = '$images/empty.svg';
 }

@@ -1,19 +1,25 @@
 import "package:get_it/get_it.dart";
 import "package:google_sign_in/google_sign_in.dart";
 import "package:shared_preferences/shared_preferences.dart";
+import "package:supermarket/core/services/local_database_service.dart";
 import "package:supermarket/core/services/localization_service.dart";
 import "package:supermarket/core/services/memory_cache_service.dart";
 import "package:supermarket/core/services/navigation_service.dart";
 import "package:supermarket/data/datasource/local/auth_local_datasource.dart";
+import "package:supermarket/data/datasource/local/db_local_datasource.dart";
 import "package:supermarket/data/datasource/local/settings_local_datasource.dart";
 import "package:supermarket/data/datasource/remote/auth_remote_datasource.dart";
 import "package:supermarket/data/repositories/auth_local_repository_impl.dart";
 import "package:supermarket/data/repositories/auth_remote_repository_impl.dart";
+import "package:supermarket/data/repositories/db_local_repository_impl.dart";
 import "package:supermarket/data/repositories/settings_repository_impl.dart";
 import "package:supermarket/domain/repositories/auth_local_repository.dart";
 import "package:supermarket/domain/repositories/auth_remote_repository.dart";
+import "package:supermarket/domain/repositories/db_local_repository.dart";
 import "package:supermarket/domain/repositories/settings_repository.dart";
 import "package:supermarket/presentation/blocs/boarding/boarding_navigation_cubit.dart";
+import "package:supermarket/presentation/blocs/cashier/cashier_bloc.dart";
+import "package:supermarket/presentation/blocs/inventory/inventory_bloc.dart";
 import "package:supermarket/presentation/blocs/localization/localization_cubit.dart";
 import "package:supermarket/presentation/blocs/login/login_auth_cubit.dart";
 import "package:supermarket/presentation/blocs/login/login_ui_cubit.dart";
@@ -72,6 +78,10 @@ Future<void> setupServiceLocator() async {
     () => AuthRemoteDatasource(serviceLocator()),
   );
 
+  serviceLocator.registerSingletonAsync(
+    () async => DBLocalDatasource(await LocalDatabaseService.database),
+  );
+
   // ####################
   //* ## Repositories
   // ####################
@@ -83,6 +93,9 @@ Future<void> setupServiceLocator() async {
   );
   serviceLocator.registerLazySingleton<AuthRemoteRepository>(
     () => AuthRemoteRepositoryImpl(serviceLocator(), serviceLocator()),
+  );
+  serviceLocator.registerLazySingleton<DBLocalRepository>(
+    () => DBLocalRepositoryImpl(serviceLocator()),
   );
 
   // ####################
@@ -97,13 +110,19 @@ Future<void> setupServiceLocator() async {
 
   serviceLocator.registerLazySingleton(() => BoardingNavigationCubit());
 
+  //* Register Blocs
   serviceLocator.registerFactory(() => RegisterUiCubit());
   serviceLocator.registerFactory(
     () => RegisterAuthCubit(serviceLocator(), serviceLocator()),
   );
 
+  //* login Blocs
   serviceLocator.registerFactory(() => LoginUiCubit());
   serviceLocator.registerFactory(
     () => LoginAuthCubit(serviceLocator(), serviceLocator()),
   );
+
+  //* Home Blocs
+  serviceLocator.registerLazySingleton(() => CashierBloc());
+  serviceLocator.registerLazySingleton(() => InventoryBloc(serviceLocator()));
 }

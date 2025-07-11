@@ -83,3 +83,15 @@ In release mode, add sqlite3.dll in same folder as your executable.
 sqfliteFfiInit is provided as an implementation reference for loading the sqlite library. Please look at sqlite3 if you want to override the behavior.
 
  */
+
+
+
+
+/*
+
+cashier
+inventory
+stats
+options
+
+ */

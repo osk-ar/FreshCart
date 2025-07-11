@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:supermarket/core/error/failures.dart';
 
 extension ThemeExtension on BuildContext {
@@ -103,6 +104,16 @@ extension ExceptionExtension on Object? {
       }
     } else if (this is SocketException) {
       return NetworkFailure(originalException: this, stackTrace: stackTrace);
+    } else if (this is DatabaseException) {
+      switch ((this as DatabaseException).toString()) {
+        case "unique constraint failed":
+          return UniqueConstraintFailure(originalException: this);
+        case "syntax error":
+          return SyntaxErrorFailure(originalException: this);
+
+        default:
+          return UnknownDatabaseFailure(originalException: this);
+      }
     } else {
       return ServerFailure(
         message: 'An unknown error occurred: ${toString()}',

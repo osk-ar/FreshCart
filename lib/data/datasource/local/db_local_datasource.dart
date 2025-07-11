@@ -1,110 +1,26 @@
-import 'dart:io';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-// In a real application, you would create dedicated model classes for each of these.
-// For simplicity in this datasource file, we'll use Map<String, dynamic>.
-//! Example: class Product { final int id; final String name; ... }
-
 class DBLocalDatasource {
-  static const String _databaseName = "freshcart.db";
-  static Database? _database;
+  final Database db;
 
-  Future<Database> get database async {
-    if (_database != null) return _database!;
-    _database = await _initDatabase();
-    return _database!;
-  }
+  DBLocalDatasource(this.db);
 
-  Future<Database> _initDatabase() async {
-    sqfliteFfiInit();
-    var databaseFactory = databaseFactoryFfi;
-
-    final Directory dbDir = await getApplicationDocumentsDirectory();
-    final String path = join(dbDir.path, _databaseName);
-
-    return await databaseFactory.openDatabase(
-      path,
-      options: OpenDatabaseOptions(version: 1, onCreate: _onCreate),
-    );
-  }
-
-  Future<void> _onCreate(Database db, int version) async {
-    // Use a batch to execute all CREATE TABLE statements in one go.
-    final batch = db.batch();
-
-    batch.execute('''
-      CREATE TABLE Products (
-          product_id INTEGER PRIMARY KEY AUTOINCREMENT,
-          name TEXT NOT NULL,
-          barcode TEXT UNIQUE,
-          selling_price REAL NOT NULL
-      );
-    ''');
-
-    batch.execute('''
-      CREATE TABLE InventoryBatches (
-          batch_id INTEGER PRIMARY KEY AUTOINCREMENT,
-          product_id INTEGER,
-          quantity_remaining INTEGER NOT NULL,
-          purchase_price REAL NOT NULL,
-          production_date TEXT,
-          expiry_date TEXT NOT NULL,
-          received_date TEXT NOT NULL,
-          FOREIGN KEY (product_id) REFERENCES Products (product_id) ON DELETE CASCADE
-      );
-    ''');
-
-    batch.execute('''
-      CREATE TABLE Receipts (
-          receipt_id INTEGER PRIMARY KEY AUTOINCREMENT,
-          receipt_datetime TEXT NOT NULL,
-          total_price REAL NOT NULL,
-          total_profit REAL NOT NULL
-      );
-    ''');
-
-    batch.execute('''
-      CREATE TABLE Receipt_Items (
-          receipt_item_id INTEGER PRIMARY KEY AUTOINCREMENT,
-          receipt_id INTEGER,
-          product_id INTEGER,
-          batch_id INTEGER,
-          quantity INTEGER NOT NULL,
-          price_at_sale REAL NOT NULL,
-          profit_per_item REAL NOT NULL,
-          FOREIGN KEY (receipt_id) REFERENCES Receipts (receipt_id) ON DELETE CASCADE,
-          FOREIGN KEY (product_id) REFERENCES Products (product_id) ON DELETE SET NULL,
-          FOREIGN KEY (batch_id) REFERENCES InventoryBatches (batch_id) ON DELETE SET NULL
-      );
-    ''');
-
-    batch.execute('''
-      CREATE TABLE Expenses (
-          expense_id INTEGER PRIMARY KEY AUTOINCREMENT,
-          description TEXT NOT NULL,
-          amount REAL NOT NULL,
-          expense_date TEXT NOT NULL
-      );
-    ''');
-
-    await batch.commit(noResult: true);
-  }
-
-  // --- Product Management ---
+  //* --- Product Management ---
 
   /// Adds a new product to the Products table.
   Future<int> addProduct({
     required String name,
-    String? barcode,
     required double sellingPrice,
+    required int quantity,
+    String? barcode,
+    String? imagePath,
   }) async {
-    final db = await database;
     return await db.insert('Products', {
       'name': name,
-      'barcode': barcode,
       'selling_price': sellingPrice,
+      'quantity': quantity,
+      'barcode': barcode,
+      'image_path': imagePath,
     });
   }
 
@@ -112,13 +28,20 @@ class DBLocalDatasource {
   Future<int> updateProduct({
     required int productId,
     required String name,
-    String? barcode,
     required double sellingPrice,
+    required int quantity,
+    String? barcode,
+    String? imagePath,
   }) async {
-    final db = await database;
     return await db.update(
       'Products',
-      {'name': name, 'barcode': barcode, 'selling_price': sellingPrice},
+      {
+        'name': name,
+        'selling_price': sellingPrice,
+        'quantity': quantity,
+        'barcode': barcode,
+        'image_path': imagePath,
+      },
       where: 'product_id = ?',
       whereArgs: [productId],
     );
@@ -126,7 +49,6 @@ class DBLocalDatasource {
 
   /// Deletes a product and its associated inventory batches (due to ON DELETE CASCADE).
   Future<int> deleteProduct(int productId) async {
-    final db = await database;
     return await db.delete(
       'Products',
       where: 'product_id = ?',
@@ -135,12 +57,44 @@ class DBLocalDatasource {
   }
 
   /// Retrieves all products from the database.
-  Future<List<Map<String, dynamic>>> getAllProducts() async {
-    final db = await database;
-    return await db.query('Products', orderBy: 'name ASC');
+  Future<List<Map<String, dynamic>>> getAllProducts({
+    int? limit,
+    int? offset,
+  }) async {
+    return await db.query(
+      'Products',
+      orderBy: 'name ASC',
+      limit: limit,
+      offset: offset,
+    );
   }
 
-  // --- Inventory & Batch Management ---
+  Future<Map<String, dynamic>?> getProductById(int id) async {
+    final products = await db.query(
+      'Products',
+      where: 'product_id = ?',
+      whereArgs: [id],
+    );
+
+    return products.first;
+  }
+
+  Future<List<Map<String, dynamic>>> searchProducts(
+    String query, {
+    int? limit,
+    int? offset,
+  }) async {
+    return await db.query(
+      'Products',
+      where: 'name LIKE ?',
+      whereArgs: ['%$query%'],
+      orderBy: 'name ASC',
+      limit: limit,
+      offset: offset,
+    );
+  }
+
+  //* --- Inventory & Batch Management ---
 
   /// Restocks an item by adding a new entry to the InventoryBatches table.
   Future<int> restockItem({
@@ -150,14 +104,22 @@ class DBLocalDatasource {
     required DateTime expiryDate,
     DateTime? productionDate,
   }) async {
-    final db = await database;
-    return await db.insert('InventoryBatches', {
-      'product_id': productId,
-      'quantity_remaining': quantity,
-      'purchase_price': purchasePrice,
-      'production_date': productionDate?.toIso8601String().split('T').first,
-      'expiry_date': expiryDate.toIso8601String().split('T').first,
-      'received_date': DateTime.now().toIso8601String().split('T').first,
+    return await db.transaction((txn) async {
+      await txn.insert('InventoryBatches', {
+        'product_id': productId,
+        'quantity_remaining': quantity,
+        'purchase_price': purchasePrice,
+        'production_date': productionDate?.toIso8601String().split('T').first,
+        'expiry_date': expiryDate.toIso8601String().split('T').first,
+        'received_date': DateTime.now().toIso8601String().split('T').first,
+      });
+
+      return await txn.update(
+        'Products',
+        {'quantity': (await getProductStockCount(productId)) + quantity},
+        where: 'product_id = ?',
+        whereArgs: [productId],
+      );
     });
   }
 
@@ -169,7 +131,6 @@ class DBLocalDatasource {
     required DateTime expiryDate,
     DateTime? productionDate,
   }) async {
-    final db = await database;
     return await db.update(
       'InventoryBatches',
       {
@@ -185,7 +146,6 @@ class DBLocalDatasource {
 
   /// Retrieves all inventory batches for a given product.
   Future<List<Map<String, dynamic>>> getBatchesForProduct(int productId) async {
-    final db = await database;
     return await db.query(
       'InventoryBatches',
       where: 'product_id = ? AND quantity_remaining > 0',
@@ -196,7 +156,6 @@ class DBLocalDatasource {
 
   /// Gets the total stock quantity for a specific product across all batches.
   Future<int> getProductStockCount(int productId) async {
-    final db = await database;
     final result = await db.rawQuery(
       '''
           SELECT SUM(quantity_remaining) as total_stock
@@ -212,14 +171,12 @@ class DBLocalDatasource {
     return 0;
   }
 
-  // --- Sales & Receipt Processing ---
+  //* --- Sales & Receipt Processing ---
 
   /// Creates a receipt in a single, atomic transaction.
   /// Takes a list of cart items, where each item is a map:
   /// {'product_id': int, 'quantity': int}
   Future<int> createReceipt(List<Map<String, dynamic>> cartItems) async {
-    final db = await database;
-
     return await db.transaction((txn) async {
       double totalReceiptPrice = 0;
       double totalReceiptProfit = 0;
@@ -317,15 +274,14 @@ class DBLocalDatasource {
     });
   }
 
-  // --- Expired Item Management ---
+  //* --- Expired Item Management ---
 
   /// Finds all batches that are expired and still have items in stock.
   Future<List<Map<String, dynamic>>> getExpiredBatches() async {
-    final db = await database;
     final today = DateTime.now().toIso8601String().split('T').first;
     return db.rawQuery(
       '''
-      SELECT b.*, p.name 
+      SELECT b.*, p.name
       FROM InventoryBatches b
       JOIN Products p ON b.product_id = p.product_id
       WHERE b.expiry_date < ? AND b.quantity_remaining > 0
@@ -336,7 +292,6 @@ class DBLocalDatasource {
 
   /// Processes all expired items: adds their cost to expenses and removes them from stock.
   Future<void> processExpiredItems() async {
-    final db = await database;
     final expiredBatches = await getExpiredBatches();
 
     if (expiredBatches.isEmpty) return;
@@ -366,11 +321,10 @@ class DBLocalDatasource {
     });
   }
 
-  // --- Statistics & Reporting ---
+  //* --- Statistics & Reporting ---
 
   /// 1. Chart with profit/datetime
   Future<List<Map<String, dynamic>>> getProfitByDate() async {
-    final db = await database;
     return await db.rawQuery('''
       SELECT
           DATE(receipt_datetime) as date,
@@ -383,7 +337,6 @@ class DBLocalDatasource {
 
   /// 2. Top 3 most sold items
   Future<List<Map<String, dynamic>>> getTopSoldProducts({int limit = 3}) async {
-    final db = await database;
     return await db.rawQuery(
       '''
       SELECT
@@ -401,7 +354,6 @@ class DBLocalDatasource {
 
   /// 3. Total income
   Future<double> getTotalIncome() async {
-    final db = await database;
     final result = await db.rawQuery(
       'SELECT SUM(total_price) as total_income FROM Receipts;',
     );
@@ -410,7 +362,6 @@ class DBLocalDatasource {
 
   /// 4. Total outgoing
   Future<double> getTotalOutgoing() async {
-    final db = await database;
     // Cost of goods sold
     final cogsResult = await db.rawQuery('''
         SELECT SUM(ri.quantity * ib.purchase_price) as cogs
@@ -431,14 +382,6 @@ class DBLocalDatasource {
 
   /// 5. Receipts with datetime - price - profit
   Future<List<Map<String, dynamic>>> getAllReceipts() async {
-    final db = await database;
     return await db.query('Receipts', orderBy: 'receipt_datetime DESC');
-  }
-
-  // --- Utility ---
-  Future<void> close() async {
-    final db = await database;
-    await db.close();
-    _database = null;
   }
 }

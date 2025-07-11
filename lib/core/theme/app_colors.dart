@@ -5,7 +5,7 @@ class AppColors {
   static const Color onPrimaryColor = Color(0xFF121712);
 
   // Light Theme Color Palette
-  static const Color lightPrimary = Color(0xFF4FD12B);
+  static const Color lightPrimary = Color(0xFF12EB69);
   static const Color lightBackground = Color(0xFFFFFFFF);
   static const Color lightHintText = Color(0xFF70826B);
   static const Color lightSecondaryText = Color(0xFF70826B);
@@ -16,7 +16,7 @@ class AppColors {
   static const Color lightOnError = Color(0xFFFFFFFF);
 
   // Theme Color Palette
-  static const Color darkPrimary = Color(0xFF8CD178);
+  static const Color darkPrimary = Color(0xFF12EB69);
   static const Color darkBackground = Color(0xFF121712);
   static const Color darkHintText = Color(0xFFA6B2A3);
   static const Color darkSecondaryText = Color(0xFFA6B2A3);

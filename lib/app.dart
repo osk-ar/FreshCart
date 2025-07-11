@@ -4,13 +4,25 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supermarket/core/routing/app_routes.dart';
 import 'package:supermarket/core/routing/route_manager.dart';
 import 'package:supermarket/core/services/dependency_injection.dart';
+import 'package:supermarket/core/services/local_database_service.dart';
 import 'package:supermarket/core/services/navigation_service.dart';
 import 'package:supermarket/core/theme/app_theme.dart';
 import 'package:supermarket/presentation/blocs/theme/theme_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void dispose() {
+    LocalDatabaseService.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

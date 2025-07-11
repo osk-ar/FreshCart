@@ -29,6 +29,19 @@ class NetworkFailure extends Failure {
     : super(message: message ?? AppStrings.networkFailure);
 }
 
+class PermissionDeniedFailure extends Failure {
+  PermissionDeniedFailure({
+    String? message,
+    super.originalException,
+    super.stackTrace,
+  }) : super(message: message ?? AppStrings.permissionDeniedFailure);
+}
+
+class NotFoundFailure extends Failure {
+  NotFoundFailure({String? message, super.originalException, super.stackTrace})
+    : super(message: message ?? AppStrings.notFoundFailure);
+}
+
 // --- 3. AUTHENTICATION-SPECIFIC FAILURE CLASSES ---
 
 class AuthFailure extends Failure {
@@ -97,15 +110,27 @@ class UserDisabledFailure extends AuthFailure {
 
 // --- 4. DATABASE/STORAGE-SPECIFIC FAILURE CLASSES ---
 
-class PermissionDeniedFailure extends Failure {
-  PermissionDeniedFailure({
-    String? message,
+/// A base class for all database-related failures.
+abstract class DatabaseFailure extends Failure {
+  const DatabaseFailure({
+    required super.message,
     super.originalException,
     super.stackTrace,
-  }) : super(message: message ?? AppStrings.permissionDeniedFailure);
+  });
 }
 
-class NotFoundFailure extends Failure {
-  NotFoundFailure({String? message, super.originalException, super.stackTrace})
-    : super(message: message ?? AppStrings.notFoundFailure);
+//todo translate
+class UniqueConstraintFailure extends DatabaseFailure {
+  const UniqueConstraintFailure({super.originalException, super.stackTrace})
+    : super(message: "An entry with this value already exists.");
+}
+
+class SyntaxErrorFailure extends DatabaseFailure {
+  const SyntaxErrorFailure({super.originalException, super.stackTrace})
+    : super(message: "There was an error in the query syntax.");
+}
+
+class UnknownDatabaseFailure extends DatabaseFailure {
+  const UnknownDatabaseFailure({super.originalException, super.stackTrace})
+    : super(message: "An unknown database error occurred.");
 }
