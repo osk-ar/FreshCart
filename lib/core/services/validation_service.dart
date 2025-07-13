@@ -74,4 +74,21 @@ class ValidationService {
     }
     return null;
   }
+
+  static String? validateItemName(String? name) {
+    if (name == null || name.isEmpty) {
+      return AppStrings.itemNameEmptyError;
+    }
+    return null;
+  }
+
+  static String? validatePrice(String? price) {
+    if (price == null || price.isEmpty) {
+      return AppStrings.priceEmptyError;
+    }
+    if (double.tryParse(price) == null) {
+      return AppStrings.priceInvalidError;
+    }
+    return null;
+  }
 }

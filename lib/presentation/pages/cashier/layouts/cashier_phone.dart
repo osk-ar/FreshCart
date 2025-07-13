@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:supermarket/core/constants/app_strings.dart';
 import 'package:supermarket/presentation/blocs/cashier/events/cashier_event.dart';
 import 'package:supermarket/presentation/blocs/cashier/cashier_bloc.dart';
 import 'package:supermarket/presentation/blocs/cashier/states/cashier_state.dart';
@@ -33,7 +34,7 @@ class CashierPhone extends StatelessWidget {
 
                   default:
                     return SliverAppbarWithSearchButton(
-                      title: "Fresh Cart",
+                      title: AppStrings.appName,
                       onSearchPressed: () {
                         context.read<CashierBloc>().add(StartSearchEvent());
                         ModalRoute.of(context)!.addLocalHistoryEntry(

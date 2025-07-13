@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:supermarket/app.dart';
 import 'package:supermarket/core/constants/app_paths.dart';
 import 'package:supermarket/core/services/dependency_injection.dart';
+import 'package:supermarket/core/services/local_database_service.dart';
 import 'package:supermarket/core/services/localization_service.dart';
 import 'package:supermarket/firebase_options.dart';
 // import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -59,15 +60,14 @@ Future<void> main() async {
 
 
 /*
-  1- work on auth datasource and repo
-  2- finish register auth cubit and page
-
-
-
-
   * navigate to home from login and register
-  * complete the firebase auth datasource on next session
-  * latest added is splash navigation, guest auth, logo, local db datasource
+  * complete the firebase auth datasource
+
+  ? latest added is add-item page and cubit, inventory bloc search and addItem
+
+  next session: 1- translate all. 2- optimize add-item page.
+
+
  */
 
 

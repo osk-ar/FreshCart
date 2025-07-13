@@ -1,4 +1,5 @@
 {
+  "fresh_cart": "Fresh Cart",
   "onboarding_screen_1_title": "Secure Your Data with Cloud Sync",
   "onboarding_screen_1_desc": "Keep your supermarket's data safe and up-to-date. Our system automatically syncs all your local information with secure cloud servers, ensuring data integrity and accessibility from anywhere, at any time.",
   "onboarding_screen_2_title": "Insightful Analytics at a Glance",
@@ -45,5 +46,27 @@
   "permission_denied_failure": "You do not have permission to perform this action.",
   "not_found_failure": "The requested item was not found.",
   "dontHaveAnAccount": "Don't have an account?",
-  "signUp": "Sign up"
+  "signUp": "Sign up",
+  "search_for_products": "Search for products...",
+  "inventory": "Inventory",
+  "home": "Home",
+  "stats": "Stats",
+  "checkout": "Checkout",
+  "add-item": "Add Item",
+  "uniqueConstraintFailure": "An entry with this value already exists.",
+  "syntaxErrorFailure": "There was an error in the query syntax.",
+  "unknownDatabaseFailure": "An unknown database error occurred.",
+  "pickingMediaFailure": "An error occurred while picking the media.",
+  "resizingMediaFailure": "An error occurred while resizing the media.",
+  "unknownMediaFailure": "An unknown media error occurred.",
+  "itemNameEmptyError": "Item name cannot be empty.",
+  "priceEmptyError": "Price cannot be empty.",
+  "priceInvalidError": "Please enter a valid price.",
+  "item_name": "Item Name",
+  "price": "Price",
+  "barcodeOptional": "Barcode (Optional)",
+  "clickToAddThumbnail": "Click to add thumbnail",
+  "gallery": "Gallery",
+  "camera": "Camera"
+
 }

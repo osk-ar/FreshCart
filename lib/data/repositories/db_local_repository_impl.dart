@@ -17,7 +17,6 @@ class DBLocalRepositoryImpl implements DBLocalRepository {
       name: product.name!,
       sellingPrice: product.price!,
       quantity: 0,
-      barcode: product.barcode,
       imagePath: product.imagePath,
     );
   }
@@ -51,7 +50,6 @@ class DBLocalRepositoryImpl implements DBLocalRepository {
       name: product.name!,
       sellingPrice: product.price!,
       quantity: product.quantity!,
-      barcode: product.barcode,
       imagePath: product.imagePath,
     );
   }

@@ -3,6 +3,8 @@
 import 'package:easy_localization/easy_localization.dart';
 
 class AppStrings {
+  static String get appName => 'fresh_cart'.tr();
+
   static String get onboardingTitle1 => 'onboarding_screen_1_title'.tr();
   static String get onboardingDesc1 => 'onboarding_screen_1_desc'.tr();
   static String get onboardingTitle2 => 'onboarding_screen_2_title'.tr();
@@ -55,6 +57,32 @@ class AppStrings {
   static String get notFoundFailure => 'not_found_failure'.tr();
   static String get dontHaveAnAccount => "dontHaveAnAccount".tr();
   static String get signUp => "signUp".tr();
+
+  static String get searchForProducts => "search_for_products".tr();
+  static String get inventory => "inventory".tr();
+  static String get home => "home".tr();
+  static String get stats => "stats".tr();
+
+  static String get checkout => "checkout".tr();
+  static String get addItem => "add-item".tr();
+  static String get itemName => "item_name".tr();
+  static String get price => "price".tr();
+  static String get barcodeOptional => "barcodeOptional".tr();
+  static String get clickToAddThumbnail => "clickToAddThumbnail".tr();
+
+  static String get uniqueConstraintFailure => "uniqueConstraintFailure".tr();
+  static String get syntaxErrorFailure => "syntaxErrorFailure".tr();
+  static String get unknownDatabaseFailure => "unknownDatabaseFailure".tr();
+  static String get pickingMediaFailure => "pickingMediaFailure".tr();
+  static String get resizingMediaFailure => "resizingMediaFailure".tr();
+  static String get unknownMediaFailure => "unknownMediaFailure".tr();
+
+  static String get itemNameEmptyError => "itemNameEmptyError".tr();
+  static String get priceEmptyError => "priceEmptyError".tr();
+  static String get priceInvalidError => "priceInvalidError".tr();
+
+  static String get gallery => "gallery".tr();
+  static String get camera => "camera".tr();
 }
 
 // example of how to use the AppStrings class

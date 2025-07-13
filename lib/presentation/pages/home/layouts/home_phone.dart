@@ -2,6 +2,8 @@ import 'dart:developer' show log;
 
 import 'package:flutter/material.dart';
 import 'package:lazy_load_indexed_stack/lazy_load_indexed_stack.dart';
+import 'package:supermarket/core/constants/app_strings.dart';
+import 'package:supermarket/core/routing/app_routes.dart';
 import 'package:supermarket/core/utils/extensions.dart';
 import 'package:supermarket/presentation/pages/cashier/cachier_page.dart';
 import 'package:supermarket/presentation/pages/inventory/inventory_page.dart';
@@ -14,16 +16,15 @@ class HomePhone extends StatefulWidget {
 }
 
 class _HomePhoneState extends State<HomePhone> {
-  //todo translate
-  static const List<BottomNavigationBarItem> _navbarItems = [
-    BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+  final List<BottomNavigationBarItem> _navbarItems = [
+    BottomNavigationBarItem(icon: Icon(Icons.home), label: AppStrings.home),
     BottomNavigationBarItem(
       icon: Icon(Icons.inventory_2_rounded),
-      label: "Inventory",
+      label: AppStrings.inventory,
     ),
     BottomNavigationBarItem(
       icon: Icon(Icons.bar_chart_rounded),
-      label: "Stats",
+      label: AppStrings.stats,
     ),
   ];
   static const List<Widget> _pages = [
@@ -34,9 +35,8 @@ class _HomePhoneState extends State<HomePhone> {
   int selectedIndex = 0;
 
   FloatingActionButton get _getCashierCheckoutButton {
-    //todo translate
     return FloatingActionButton.extended(
-      label: Text("Checkout"),
+      label: Text(AppStrings.checkout),
       onPressed: () {
         log("UnImplemented Checkout");
       },
@@ -44,12 +44,9 @@ class _HomePhoneState extends State<HomePhone> {
   }
 
   FloatingActionButton get _getInventoryAddItemButton {
-    //todo translate
     return FloatingActionButton.extended(
-      label: Text("Add Item"),
-      onPressed: () {
-        log("UnImplemented Add Item");
-      },
+      label: Text(AppStrings.addItem),
+      onPressed: () => context.pushNamed(AppRoutes.addItem),
     );
   }
 

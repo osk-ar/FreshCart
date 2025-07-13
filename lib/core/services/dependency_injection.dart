@@ -1,6 +1,8 @@
 import "package:get_it/get_it.dart";
 import "package:google_sign_in/google_sign_in.dart";
+import "package:image_picker/image_picker.dart";
 import "package:shared_preferences/shared_preferences.dart";
+import "package:supermarket/core/services/image_service.dart";
 import "package:supermarket/core/services/local_database_service.dart";
 import "package:supermarket/core/services/localization_service.dart";
 import "package:supermarket/core/services/memory_cache_service.dart";
@@ -17,6 +19,7 @@ import "package:supermarket/domain/repositories/auth_local_repository.dart";
 import "package:supermarket/domain/repositories/auth_remote_repository.dart";
 import "package:supermarket/domain/repositories/db_local_repository.dart";
 import "package:supermarket/domain/repositories/settings_repository.dart";
+import "package:supermarket/presentation/blocs/add_item/add_item_cubit.dart";
 import "package:supermarket/presentation/blocs/boarding/boarding_navigation_cubit.dart";
 import "package:supermarket/presentation/blocs/cashier/cashier_bloc.dart";
 import "package:supermarket/presentation/blocs/inventory/inventory_bloc.dart";
@@ -55,6 +58,7 @@ Future<void> setupServiceLocator() async {
   );
   serviceLocator.registerSingleton<FlutterSecureStorage>(secureStorage);
   serviceLocator.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn());
+  serviceLocator.registerLazySingleton<ImagePicker>(() => ImagePicker());
 
   // ####################
   //* ## Services
@@ -64,6 +68,7 @@ Future<void> setupServiceLocator() async {
     () => LocalizationService(serviceLocator()),
   );
   serviceLocator.registerLazySingleton(() => MemoryCacheService());
+  serviceLocator.registerLazySingleton(() => ImageService(serviceLocator()));
 
   // ####################
   //* ## Data Sources
@@ -122,7 +127,12 @@ Future<void> setupServiceLocator() async {
     () => LoginAuthCubit(serviceLocator(), serviceLocator()),
   );
 
-  //* Home Blocs
+  //* Inventory Blocs
+  serviceLocator.registerLazySingleton(
+    () => InventoryBloc(serviceLocator(), serviceLocator()),
+  );
+  serviceLocator.registerFactory(() => AddItemCubit(serviceLocator()));
+
+  //* Cashier Blocs
   serviceLocator.registerLazySingleton(() => CashierBloc());
-  serviceLocator.registerLazySingleton(() => InventoryBloc(serviceLocator()));
 }

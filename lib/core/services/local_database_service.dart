@@ -35,7 +35,6 @@ class LocalDatabaseService {
           name TEXT NOT NULL,
           selling_price REAL NOT NULL,
           quantity INTEGER NOT NULL,
-          barcode TEXT UNIQUE,
           image_path TEXT UNIQUE
       );
     ''');
@@ -87,6 +86,13 @@ class LocalDatabaseService {
     ''');
 
     await batch.commit(noResult: true);
+  }
+
+  static Future<void> deleteDatabaseFile() async {
+    final documentsDirectory = await getApplicationDocumentsDirectory();
+    final path = join(documentsDirectory.path, _databaseName);
+    databaseFactoryFfi.deleteDatabase(path);
+    _database = null;
   }
 
   static Future<void> close() async {

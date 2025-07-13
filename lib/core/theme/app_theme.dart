@@ -19,7 +19,7 @@ class AppTheme {
       error: Color(0xFFBA1A1A),
       onError: Colors.white,
     ),
-    textTheme: TextTheme(
+    textTheme: const TextTheme(
       displayLarge: TextStyle(color: AppColors.lightPrimaryTextColor),
       displayMedium: TextStyle(color: AppColors.lightPrimaryTextColor),
       displaySmall: TextStyle(color: AppColors.lightPrimaryTextColor),
@@ -40,18 +40,18 @@ class AppTheme {
       ),
       bodyLarge: TextStyle(color: AppColors.lightPrimaryTextColor),
       bodyMedium: TextStyle(color: AppColors.lightPrimaryTextColor),
-      bodySmall: const TextStyle(color: AppColors.lightSecondaryText),
-      labelLarge: const TextStyle(
+      bodySmall: TextStyle(color: AppColors.lightSecondaryText),
+      labelLarge: TextStyle(
         color: AppColors.onPrimaryColor,
         fontWeight: FontWeight.bold,
       ), // For text on primary buttons
-      labelMedium: const TextStyle(color: AppColors.lightHintText),
-      labelSmall: const TextStyle(color: AppColors.lightHintText),
+      labelMedium: TextStyle(color: AppColors.lightHintText),
+      labelSmall: TextStyle(color: AppColors.lightHintText),
     ),
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.lightBackground,
       elevation: 0,
-      iconTheme: IconThemeData(color: AppColors.lightPrimary),
+      iconTheme: const IconThemeData(color: AppColors.lightPrimary),
       titleTextStyle: TextStyle(
         color: AppColors.lightPrimaryTextColor,
         fontSize: 20.sp,
@@ -61,6 +61,7 @@ class AppTheme {
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: AppColors.lightTextfields,
+      constraints: BoxConstraints(maxWidth: 358.w, minHeight: 72.h),
       hintStyle: const TextStyle(color: AppColors.lightHintText),
       labelStyle: const TextStyle(color: AppColors.lightHintText),
       border: OutlineInputBorder(
@@ -118,39 +119,39 @@ class AppTheme {
       error: Color(0xFFFFB4AB),
       onError: Color(0xFF690005),
     ),
-    textTheme: TextTheme(
+    textTheme: const TextTheme(
       displayLarge: TextStyle(color: AppColors.darkPrimaryTextColor),
       displayMedium: TextStyle(color: AppColors.darkPrimaryTextColor),
       displaySmall: TextStyle(color: AppColors.darkPrimaryTextColor),
       headlineLarge: TextStyle(color: AppColors.darkPrimaryTextColor),
       headlineMedium: TextStyle(color: AppColors.darkPrimaryTextColor),
       headlineSmall: TextStyle(color: AppColors.darkPrimaryTextColor),
-      titleLarge: const TextStyle(
+      titleLarge: TextStyle(
         fontWeight: FontWeight.bold,
         color: AppColors.darkPrimaryTextColor,
       ),
-      titleMedium: const TextStyle(
+      titleMedium: TextStyle(
         fontWeight: FontWeight.bold,
         color: AppColors.darkPrimaryTextColor,
       ),
-      titleSmall: const TextStyle(
+      titleSmall: TextStyle(
         fontWeight: FontWeight.bold,
         color: AppColors.darkPrimaryTextColor,
       ),
       bodyLarge: TextStyle(color: AppColors.darkPrimaryTextColor),
       bodyMedium: TextStyle(color: AppColors.darkPrimaryTextColor),
-      bodySmall: const TextStyle(color: AppColors.darkSecondaryText),
-      labelLarge: const TextStyle(
+      bodySmall: TextStyle(color: AppColors.darkSecondaryText),
+      labelLarge: TextStyle(
         color: AppColors.onPrimaryColor,
         fontWeight: FontWeight.bold,
       ), // For text on primary buttons
-      labelMedium: const TextStyle(color: AppColors.darkHintText),
-      labelSmall: const TextStyle(color: AppColors.darkHintText),
+      labelMedium: TextStyle(color: AppColors.darkHintText),
+      labelSmall: TextStyle(color: AppColors.darkHintText),
     ),
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.darkBackground,
       elevation: 0,
-      iconTheme: IconThemeData(color: AppColors.darkPrimary),
+      iconTheme: const IconThemeData(color: AppColors.darkPrimary),
       titleTextStyle: TextStyle(
         color: AppColors.darkPrimaryTextColor,
         fontSize: 20.sp,
@@ -160,6 +161,7 @@ class AppTheme {
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: AppColors.darkTextfields,
+      constraints: BoxConstraints(maxWidth: 358.w, minHeight: 72.h),
       hintStyle: const TextStyle(color: AppColors.darkHintText),
       labelStyle: const TextStyle(color: AppColors.darkHintText),
       border: OutlineInputBorder(

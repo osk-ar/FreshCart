@@ -12,14 +12,12 @@ class DBLocalDatasource {
     required String name,
     required double sellingPrice,
     required int quantity,
-    String? barcode,
     String? imagePath,
   }) async {
     return await db.insert('Products', {
       'name': name,
       'selling_price': sellingPrice,
       'quantity': quantity,
-      'barcode': barcode,
       'image_path': imagePath,
     });
   }
@@ -30,7 +28,6 @@ class DBLocalDatasource {
     required String name,
     required double sellingPrice,
     required int quantity,
-    String? barcode,
     String? imagePath,
   }) async {
     return await db.update(
@@ -39,7 +36,6 @@ class DBLocalDatasource {
         'name': name,
         'selling_price': sellingPrice,
         'quantity': quantity,
-        'barcode': barcode,
         'image_path': imagePath,
       },
       where: 'product_id = ?',

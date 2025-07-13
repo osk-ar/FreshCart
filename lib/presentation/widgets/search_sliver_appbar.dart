@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:supermarket/core/constants/app_strings.dart';
 import 'package:supermarket/core/utils/extensions.dart';
 
 class SearchSliverAppbar extends StatefulWidget {
@@ -20,7 +21,7 @@ class SearchSliverAppbar extends StatefulWidget {
 }
 
 class _SearchSliverAppbarState extends State<SearchSliverAppbar> {
-  static const int _debounceMilliSeconds = 500;
+  static const int _debounceMilliSeconds = 700;
   Timer? _debounceTimer;
 
   late final TextEditingController _controller;
@@ -46,8 +47,7 @@ class _SearchSliverAppbarState extends State<SearchSliverAppbar> {
         controller: _controller,
         decoration: InputDecoration(
           filled: false,
-          //todo translate
-          hintText: "Search for products",
+          hintText: AppStrings.searchForProducts,
           constraints: BoxConstraints(maxWidth: 324.w),
           floatingLabelBehavior: FloatingLabelBehavior.always,
           focusedBorder: OutlineInputBorder(

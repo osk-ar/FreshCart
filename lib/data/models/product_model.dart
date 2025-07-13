@@ -6,7 +6,6 @@ class ProductModel extends ProductEntity {
     super.name,
     super.price,
     super.quantity,
-    super.barcode,
     super.imagePath,
   });
 
@@ -19,7 +18,6 @@ class ProductModel extends ProductEntity {
               ? (json['selling_price'] as int).toDouble()
               : json['selling_price'] as double?,
       quantity: json['quantity'] as int?,
-      barcode: json['barcode'] as String?,
       imagePath: json['image_path'] as String?,
     );
   }

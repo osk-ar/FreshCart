@@ -1,4 +1,5 @@
 {
+  "fresh_cart": "فريش كارت",
   "onboarding_screen_1_title": "أمّن بياناتك بالمزامنة السحابية",
   "onboarding_screen_1_desc": "حافظ على بيانات متجرك آمنة ومحدثة. يقوم نظامنا بمزامنة جميع معلوماتك المحلية تلقائيًا مع خوادم سحابية آمنة، مما يضمن سلامة البيانات وإمكانية الوصول إليها من أي مكان وفي أي وقت.",
   "onboarding_screen_2_title": "تحليلات دقيقة في متناول يدك",
@@ -45,5 +46,27 @@
   "permission_denied_failure": "ليس لديك إذن لتنفيذ هذا الإجراء.",
   "not_found_failure": "لم يتم العثور على العنصر المطلوب.",
   "dontHaveAnAccount": "ليس لديك حساب؟",
-  "signUp": "انشاء حساب"
+  "signUp": "انشاء حساب",
+  "search_for_products": "Search for products...",
+  "inventory": "المخزون",
+  "home": "الرئيسية",
+  "stats": "الإحصائيات",
+  "checkout": "الدفع",
+  "add-item": "اضافة صنف",
+  "uniqueConstraintFailure": "يوجد سجل بهذه القيمة بالفعل.",
+  "syntaxErrorFailure": "حدث خطأ في صياغة الاستعلام.",
+  "unknownDatabaseFailure": "حدث خطأ غير معروف في قاعدة البيانات.",
+  "pickingMediaFailure": "حدث خطأ أثناء اختيار الوسائط.",
+  "resizingMediaFailure": "حدث خطأ أثناء تغيير حجم الوسائط.",
+  "unknownMediaFailure": "حدث خطأ غير معروف في الوسائط.",
+  "itemNameEmptyError": "لا يمكن أن يكون اسم العنصر فارغًا.",
+  "priceEmptyError": "لا يمكن أن يكون السعر فارغًا.",
+  "priceInvalidError": "الرجاء إدخال سعر صحيح.",
+  "item_name": "اسم العنصر",
+  "price": "السعر",
+  "barcodeOptional": "الباركود (اختياري)",
+  "clickToAddThumbnail": "اضغط لإضافة صورة مصغرة",
+  "gallery": "المعرض",
+  "camera": "الكاميرا"
+  
 }

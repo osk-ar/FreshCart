@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supermarket/core/routing/app_routes.dart';
+import 'package:supermarket/domain/entities/product_entity.dart';
+import 'package:supermarket/presentation/pages/add_item/add_item_page.dart';
 import 'package:supermarket/presentation/pages/boarding/boarding_page.dart';
 import 'package:supermarket/presentation/pages/home/home_page.dart';
 import 'package:supermarket/presentation/pages/login/login_page.dart';
@@ -20,6 +22,11 @@ class RouteManager {
         return MaterialPageRoute(builder: (_) => const LoginPage());
       case AppRoutes.home:
         return MaterialPageRoute(builder: (_) => const HomePage());
+      case AppRoutes.addItem:
+        final productToUpdate = settings.arguments as ProductEntity?;
+        return _animateNavigation(
+          AddItemPage(productToUpdate: productToUpdate),
+        );
       default:
         return MaterialPageRoute(builder: (_) => notFoundScreen());
     }
@@ -36,8 +43,6 @@ class RouteManager {
     );
   }
 
-  //todo: use or delete
-  // ignore: unused_element
   static Route _animateNavigation(Widget page) {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => page,

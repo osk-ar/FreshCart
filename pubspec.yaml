@@ -11,17 +11,18 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # State Management
+  flutter_bloc: ^9.1.1
+  equatable: ^2.0.7
   # Presentation
+  shimmer: ^3.0.0
+  flutter_svg: ^2.2.0
   cupertino_icons: ^1.0.8
   flutter_screenutil: ^5.9.3
   easy_localization: ^3.0.7+1
-  flutter_bloc: ^9.1.1
-  equatable: ^2.0.7
-  flutter_svg: ^2.2.0
-  shimmer: ^3.0.0
   smooth_page_indicator: ^1.2.1
-  lazy_load_indexed_stack: ^1.2.1
   flutter_native_splash: ^2.4.6
+  lazy_load_indexed_stack: ^1.2.1
   # Firebase
   firebase_core: ^3.14.0
   firebase_auth: ^5.6.0
@@ -37,10 +38,14 @@ dependencies:
   sqlite3_flutter_libs: ^0.5.34
   # Security
   flutter_dotenv: ^5.2.1
-  get_it: ^8.0.3
   #General
   path: ^1.9.1
+  image: ^4.5.4
+  get_it: ^8.0.3
+  crop_image: ^1.0.16
+  image_picker: ^1.1.2
   path_provider: ^2.1.5
+  mobile_scanner: ^7.0.1
   
 
 

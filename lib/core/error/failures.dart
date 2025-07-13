@@ -119,18 +119,59 @@ abstract class DatabaseFailure extends Failure {
   });
 }
 
-//todo translate
 class UniqueConstraintFailure extends DatabaseFailure {
-  const UniqueConstraintFailure({super.originalException, super.stackTrace})
-    : super(message: "An entry with this value already exists.");
+  UniqueConstraintFailure({
+    String? message,
+    super.originalException,
+    super.stackTrace,
+  }) : super(message: message ?? AppStrings.uniqueConstraintFailure);
 }
 
 class SyntaxErrorFailure extends DatabaseFailure {
-  const SyntaxErrorFailure({super.originalException, super.stackTrace})
-    : super(message: "There was an error in the query syntax.");
+  SyntaxErrorFailure({
+    String? message,
+    super.originalException,
+    super.stackTrace,
+  }) : super(message: message ?? AppStrings.syntaxErrorFailure);
 }
 
 class UnknownDatabaseFailure extends DatabaseFailure {
-  const UnknownDatabaseFailure({super.originalException, super.stackTrace})
-    : super(message: "An unknown database error occurred.");
+  UnknownDatabaseFailure({
+    String? message,
+    super.originalException,
+    super.stackTrace,
+  }) : super(message: message ?? AppStrings.unknownDatabaseFailure);
+}
+
+/// A base class for all media-related failures.
+abstract class MediaFailure extends Failure {
+  const MediaFailure({
+    required super.message,
+    super.originalException,
+    super.stackTrace,
+  });
+}
+
+class PickingMediaFailure extends MediaFailure {
+  PickingMediaFailure({
+    String? message,
+    super.originalException,
+    super.stackTrace,
+  }) : super(message: message ?? AppStrings.pickingMediaFailure);
+}
+
+class ResizingMediaFailure extends MediaFailure {
+  ResizingMediaFailure({
+    String? message,
+    super.originalException,
+    super.stackTrace,
+  }) : super(message: message ?? AppStrings.resizingMediaFailure);
+}
+
+class UnknownMediaFailure extends MediaFailure {
+  UnknownMediaFailure({
+    String? message,
+    super.originalException,
+    super.stackTrace,
+  }) : super(message: message ?? AppStrings.unknownMediaFailure);
 }

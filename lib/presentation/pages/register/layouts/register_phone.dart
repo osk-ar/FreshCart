@@ -116,7 +116,7 @@ class _RegisterPhoneState extends State<RegisterPhone> {
                 ),
                 textDirection: TextDirection.ltr,
               ),
-              Spacer(),
+              const Spacer(),
               SizedBox(
                 width: double.infinity,
                 child: Text(
@@ -147,7 +147,7 @@ class _RegisterPhoneState extends State<RegisterPhone> {
                 ),
                 textDirection: TextDirection.ltr,
               ),
-              Spacer(),
+              const Spacer(),
               SizedBox(
                 width: double.infinity,
                 child: Text(
@@ -204,7 +204,7 @@ class _RegisterPhoneState extends State<RegisterPhone> {
                   );
                 },
               ),
-              Spacer(),
+              const Spacer(),
               SizedBox(
                 width: double.infinity,
                 child: Text(
@@ -251,7 +251,7 @@ class _RegisterPhoneState extends State<RegisterPhone> {
                   );
                 },
               ),
-              Spacer(),
+              const Spacer(),
               BlocConsumer<RegisterAuthCubit, RegisterAuthState>(
                 listener: (context, state) {
                   switch (state) {

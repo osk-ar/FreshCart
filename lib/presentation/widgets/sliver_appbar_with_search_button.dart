@@ -15,7 +15,7 @@ class SliverAppbarWithSearchButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverAppBar(
       floating: true,
-      //todo translate
+
       title: Text(title, style: TextStyle(color: context.colorScheme.primary)),
       actions: [
         IconButton(

@@ -102,7 +102,7 @@ class _LoginPhoneState extends State<LoginPhone> {
                 ),
                 textDirection: TextDirection.ltr,
               ),
-              Spacer(),
+              const Spacer(),
               SizedBox(
                 width: double.infinity,
                 child: Text(
@@ -144,7 +144,7 @@ class _LoginPhoneState extends State<LoginPhone> {
                   );
                 },
               ),
-              Spacer(),
+              const Spacer(),
               SizedBox(height: 216.h),
               BlocConsumer<LoginAuthCubit, LoginAuthState>(
                 listener: (context, state) {

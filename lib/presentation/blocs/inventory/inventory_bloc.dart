@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:supermarket/core/services/image_service.dart';
 import 'package:supermarket/domain/entities/product_entity.dart';
 import 'package:supermarket/domain/repositories/db_local_repository.dart';
 import 'package:supermarket/presentation/blocs/inventory/events/inventory_event.dart';
@@ -9,9 +10,13 @@ import 'package:supermarket/presentation/blocs/inventory/states/inventory_state.
 
 class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
   final DBLocalRepository _dbLocalRepository;
-  InventoryBloc(this._dbLocalRepository) : super(InventoryInitial()) {
+  final ImageService _imageService;
+  InventoryBloc(this._dbLocalRepository, this._imageService)
+    : super(InventoryInitial()) {
     on<InventoryFetchItemsEvent>(_fetchItems);
     on<InventoryAddItemEvent>(_addItem);
+    on<InventoryEditItemEvent>(_editItem);
+    // on<InventoryDeleteItemEvent>(_deleteItem);
     on<InventoryStartSearchEvent>((event, emit) => _startSearch(event, emit));
     on<InventoryChangeSearchEvent>(_searchItem);
     on<InventoryEndSearchEvent>(_endSearch);
@@ -67,11 +72,57 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
       await _dbLocalRepository.addProduct(event.product);
       _items.add(event.product);
       emit(InventoryLoaded(_items));
+      log("Success: ${event.product.name}");
     } catch (e) {
       emit(InventoryError(e.toString()));
     }
   }
 
+  Future<void> _editItem(
+    InventoryEditItemEvent event,
+    Emitter<InventoryState> emit,
+  ) async {
+    emit(InventoryLoading());
+
+    try {
+      await _dbLocalRepository.updateProduct(event.product);
+
+      final index = _items.indexWhere(
+        (element) => element.id == event.product.id,
+      );
+      if (index != -1) {
+        final String? oldImagePath = _items[index].imagePath;
+        await _imageService.deleteImage(oldImagePath);
+
+        _items[index] = event.product;
+      }
+      emit(InventoryLoaded(_items));
+      log("Success: ${event.product.name}");
+    } catch (e) {
+      emit(InventoryError(e.toString()));
+      log(e.toString());
+      emit(InventoryLoaded(_items));
+    }
+  }
+
+  // Future<void> _deleteItem(
+  //   InventoryDeleteItemEvent event,
+  //   Emitter<InventoryState> emit,
+  // ) async {
+  //   emit(InventoryLoading());
+
+  //   try {
+  //     await _dbLocalRepository.deleteProduct(event.productId);
+  //     _items.removeWhere((element) => element.id == event.productId);
+  //     emit(InventoryLoaded(_items));
+  //     log("Success: Deleted product with ID: ${event.productId}");
+  //   } catch (e) {
+  //     emit(InventoryError(e.toString()));
+  //   }
+
+  // }
+
+  //* Searching
   void _startSearch(
     InventoryStartSearchEvent event,
     Emitter<InventoryState> emit,
@@ -165,4 +216,6 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
     searchOffset = 0;
     isSearchLastItemReached = false;
   }
+
+  //* Adding
 }

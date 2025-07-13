@@ -42,6 +42,23 @@ extension SnackBarExtension on BuildContext {
   }
 }
 
+extension BottomSheet on BuildContext {
+  void bottomSheet(
+    Widget body, {
+    BorderRadius borderRadius = BorderRadius.zero,
+    BorderSide borderSide = BorderSide.none,
+  }) {
+    showModalBottomSheet(
+      context: this,
+      builder: (context) => body,
+      shape: RoundedRectangleBorder(
+        borderRadius: borderRadius,
+        side: borderSide,
+      ),
+    );
+  }
+}
+
 extension ExceptionExtension on Object? {
   Failure mapExceptionToFailure([StackTrace? stackTrace]) {
     if (this is FirebaseException) {
