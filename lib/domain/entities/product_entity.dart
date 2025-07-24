@@ -29,4 +29,9 @@ class ProductEntity {
       imagePath: imagePath ?? this.imagePath,
     );
   }
+
+  @override
+  String toString() {
+    return '''ProductEntity(id: $id, name: $name, price: $price, quantity: $quantity, imagePath: $imagePath)''';
+  }
 }

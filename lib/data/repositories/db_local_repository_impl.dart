@@ -49,7 +49,6 @@ class DBLocalRepositoryImpl implements DBLocalRepository {
       productId: product.id!,
       name: product.name!,
       sellingPrice: product.price!,
-      quantity: product.quantity!,
       imagePath: product.imagePath,
     );
   }
@@ -78,5 +77,13 @@ class DBLocalRepositoryImpl implements DBLocalRepository {
               .map((product) => ProductModel.fromMap(product))
               .toList(),
     );
+  }
+
+  @override
+  Future<ProductEntity?> getProductById(int productId) async {
+    final Map<String, dynamic>? productMap = await _dbLocalDatasource
+        .getProductById(productId);
+
+    return productMap != null ? ProductModel.fromMap(productMap) : null;
   }
 }

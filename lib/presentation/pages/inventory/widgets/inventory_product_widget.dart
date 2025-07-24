@@ -1,15 +1,14 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:supermarket/core/constants/app_strings.dart';
 import 'package:supermarket/core/utils/extensions.dart';
 import 'package:supermarket/domain/entities/product_entity.dart';
 import 'package:supermarket/presentation/pages/inventory/widgets/compact_elevated_button.dart';
 
-//todo translate
-class InventoryProduct extends StatelessWidget {
-  const InventoryProduct({
+class InventoryProductWidget extends StatelessWidget {
+  const InventoryProductWidget({
     super.key,
     required this.product,
     required this.onEdit,
@@ -25,7 +24,6 @@ class InventoryProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pixelRatio = MediaQuery.of(context).devicePixelRatio;
-    log(product.imagePath.toString());
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       margin: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
@@ -83,7 +81,7 @@ class InventoryProduct extends StatelessWidget {
                         style: TextStyle(color: context.colorScheme.onSurface),
                         children: [
                           TextSpan(
-                            text: "Name: ",
+                            text: "${AppStrings.name}: ",
                             style: TextStyle(
                               color: context.colorScheme.primary,
                             ),
@@ -97,7 +95,7 @@ class InventoryProduct extends StatelessWidget {
                         style: TextStyle(color: context.colorScheme.onSurface),
                         children: [
                           TextSpan(
-                            text: "Price: ",
+                            text: "${AppStrings.price}: ",
                             style: TextStyle(
                               color: context.colorScheme.primary,
                             ),
@@ -111,7 +109,7 @@ class InventoryProduct extends StatelessWidget {
                         style: TextStyle(color: context.colorScheme.onSurface),
                         children: [
                           TextSpan(
-                            text: "QTY: ",
+                            text: "${AppStrings.quantity}: ",
                             style: TextStyle(
                               color: context.colorScheme.primary,
                             ),
@@ -129,7 +127,7 @@ class InventoryProduct extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     CompactElevatedButton(
-                      title: "Edit",
+                      title: AppStrings.edit,
                       onPressed: onEdit,
                       backgroundColor: context.theme.scaffoldBackgroundColor,
                       padding: EdgeInsets.zero,
@@ -149,7 +147,7 @@ class InventoryProduct extends StatelessWidget {
                           ),
                         ),
                         CompactElevatedButton(
-                          title: "ReStock",
+                          title: AppStrings.restock,
                           onPressed: onRestock,
                           padding: EdgeInsets.zero,
                           titleStyle: TextStyle(

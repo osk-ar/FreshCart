@@ -256,14 +256,14 @@ class _RegisterPhoneState extends State<RegisterPhone> {
                 listener: (context, state) {
                   switch (state) {
                     case RegisterSuccess():
-                      context.message("Success");
+                      context.snackBar("Success");
                       context.pushAndRemoveUntil(
                         AppRoutes.home,
                         (route) => false,
                       );
                       break;
                     case RegisterFailure():
-                      context.message("Failure: ${state.error}");
+                      context.snackBar("Failure: ${state.error}");
                       break;
                     default:
                   }

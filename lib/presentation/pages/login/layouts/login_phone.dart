@@ -150,14 +150,14 @@ class _LoginPhoneState extends State<LoginPhone> {
                 listener: (context, state) {
                   switch (state) {
                     case LoginSuccess():
-                      context.message("Success");
+                      context.snackBar("Success");
                       context.pushAndRemoveUntil(
                         AppRoutes.home,
                         (route) => false,
                       );
                       break;
                     case LoginFailure():
-                      context.message(state.error);
+                      context.snackBar(state.error);
                       break;
                   }
                 },

@@ -1,4 +1,6 @@
+import 'dart:developer';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
@@ -35,37 +37,51 @@ class ImageService {
     }
   }
 
-  Future<File?> resizeImage(
-    File originalImage,
-    int newWidth,
-    int newHeight,
-  ) async {
-    final image = img.decodeImage(await originalImage.readAsBytes());
+  static Future<File> resizeAndSaveImage({
+    required int width,
+    required int height,
+    required Uint8List originalImageBytes,
+    required int newWidth,
+    required int newHeight,
+  }) async {
+    final image = img.Image.fromBytes(
+      width: width,
+      height: height,
+      bytes: originalImageBytes.buffer,
+      format: img.Format.uint8,
+      order: img.ChannelOrder.rgba,
+    );
 
-    if (image != null) {
-      final thumbnail = img.copyResize(
-        image,
-        width: newWidth,
-        height: newHeight,
-      );
+    final thumbnail = img.copyResize(
+      image,
+      width: newWidth,
+      height: newHeight,
+      interpolation: img.Interpolation.average,
+    );
 
-      final directory = await getApplicationDocumentsDirectory();
-      final path = directory.path;
+    final resizedBytes = img.encodeJpg(thumbnail, quality: 90);
 
-      final resizedImageFile = File(
-        '$path/thumbnail_${DateTime.now().millisecondsSinceEpoch}.png',
-      )..writeAsBytesSync(img.encodePng(thumbnail));
+    final directory = await getApplicationDocumentsDirectory();
+    final path = directory.path;
+    final filePath =
+        '$path/product_${DateTime.now().millisecondsSinceEpoch}.jpg';
+    final resizedImageFile = File(filePath);
 
-      return resizedImageFile;
-    } else {
-      throw ResizingMediaFailure();
-    }
+    await resizedImageFile.writeAsBytes(resizedBytes);
+
+    return resizedImageFile;
   }
 
   Future<void> deleteImage(String? imagePath) async {
     if (imagePath == null) return;
 
-    final file = File(imagePath);
-    await file.delete();
+    try {
+      final file = File(imagePath);
+      if (await file.exists()) {
+        await file.delete();
+      }
+    } catch (e) {
+      log("Error deleting file: $imagePath, error: $e");
+    }
   }
 }

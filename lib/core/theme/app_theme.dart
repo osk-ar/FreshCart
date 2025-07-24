@@ -85,6 +85,7 @@ class AppTheme {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24.0.r),
         ),
+        fixedSize: Size.fromHeight(48.h),
       ),
     ),
     textButtonTheme: TextButtonThemeData(
@@ -185,6 +186,7 @@ class AppTheme {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24.0.r),
         ),
+        fixedSize: Size.fromHeight(48.h),
       ),
     ),
     textButtonTheme: TextButtonThemeData(

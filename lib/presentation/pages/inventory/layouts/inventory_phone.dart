@@ -1,16 +1,19 @@
-import 'dart:developer' show log;
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:supermarket/core/constants/app_strings.dart';
 import 'package:supermarket/core/routing/app_routes.dart';
 import 'package:supermarket/core/utils/extensions.dart';
-import 'package:supermarket/presentation/blocs/inventory/events/inventory_event.dart';
-import 'package:supermarket/presentation/blocs/inventory/inventory_bloc.dart';
+import 'package:supermarket/domain/entities/product_entity.dart';
+import 'package:supermarket/presentation/blocs/inventory/inventory_cubit.dart';
 import 'package:supermarket/presentation/blocs/inventory/states/inventory_state.dart';
-import 'package:supermarket/presentation/pages/inventory/widgets/inventory_product.dart';
 import 'package:supermarket/presentation/pages/inventory/widgets/inventory_product_shimmer.dart';
+import 'package:supermarket/presentation/pages/inventory/widgets/inventory_product_widget.dart';
+import 'package:supermarket/presentation/pages/inventory/widgets/remove_item_dialog.dart';
+import 'package:supermarket/presentation/widgets/infinite_scroll_helper_widgets.dart';
 import 'package:supermarket/presentation/widgets/search_sliver_appbar.dart';
 import 'package:supermarket/presentation/widgets/sliver_appbar_with_search_button.dart';
 
@@ -23,158 +26,104 @@ class InventoryPhone extends StatefulWidget {
 
 class _InventoryPhoneState extends State<InventoryPhone> {
   @override
-  void initState() {
-    super.initState();
-    context.read<InventoryBloc>().add(InventoryFetchItemsEvent());
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        BlocBuilder<InventoryBloc, InventoryState>(
-          buildWhen: (previous, current) {
-            return current is InventorySearching || current is InventoryLoaded;
-          },
-          builder: (context, state) {
-            log(state.runtimeType.toString());
-            switch (state) {
-              case InventorySearching():
-                return SearchSliverAppbar(
-                  onSearchChanged: (query) {
-                    context.read<InventoryBloc>().add(
-                      InventoryChangeSearchEvent(query),
-                    );
-                  },
-                  onClear: () {
-                    final String lastQuery =
-                        context.read<InventoryBloc>().searchQuery;
-
-                    if (lastQuery.isEmpty) {
-                      context.pop();
-                      context.read<InventoryBloc>().add(
-                        InventoryEndSearchEvent(),
+    return RefreshIndicator.adaptive(
+      onRefresh: () async {
+        context.read<InventoryCubit>().refresh();
+      },
+      triggerMode: RefreshIndicatorTriggerMode.anywhere,
+      child: CustomScrollView(
+        slivers: [
+          BlocBuilder<InventoryCubit, InventoryState>(
+            builder: (context, state) {
+              log(state.runtimeType.toString());
+              switch (state) {
+                case InventorySearch():
+                  return SearchSliverAppbar(
+                    onSearchChanged: (query) {
+                      context.read<InventoryCubit>().updateSearchQuery(query);
+                    },
+                  );
+                default:
+                  return SliverAppbarWithSearchButton(
+                    title: AppStrings.inventory,
+                    onSearchPressed: () {
+                      context.read<InventoryCubit>().switchState();
+                      ModalRoute.of(context)!.addLocalHistoryEntry(
+                        LocalHistoryEntry(
+                          onRemove: () {
+                            context.read<InventoryCubit>().switchState();
+                          },
+                        ),
                       );
-                      return;
-                    }
+                    },
+                  );
+              }
+            },
+          ),
 
-                    context.read<InventoryBloc>().add(
-                      InventoryChangeSearchEvent(""),
-                    );
-                  },
-                );
-              default:
-                return SliverAppbarWithSearchButton(
-                  title: AppStrings.inventory,
-                  onSearchPressed: () {
-                    context.read<InventoryBloc>().add(
-                      InventoryStartSearchEvent(),
-                    );
-                    ModalRoute.of(context)!.addLocalHistoryEntry(
-                      LocalHistoryEntry(
-                        onRemove: () {
-                          context.read<InventoryBloc>().add(
-                            InventoryEndSearchEvent(),
-                          );
-                        },
+          SliverToBoxAdapter(child: SizedBox(height: 8.h)),
+
+          BlocBuilder<InventoryCubit, InventoryState>(
+            builder: (context, state) {
+              final bool isSearching = state is InventorySearch;
+              return PagedSliverList<int, ProductEntity>(
+                state: state.pagingState,
+                fetchNextPage:
+                    isSearching
+                        ? context.read<InventoryCubit>().fetchSearch
+                        : context.read<InventoryCubit>().fetchFeed,
+                builderDelegate: PagedChildBuilderDelegate<ProductEntity>(
+                  invisibleItemsThreshold: 8,
+                  itemBuilder:
+                      (context, item, index) => InventoryProductWidget(
+                        product: item,
+                        onEdit:
+                            () => context.pushNamed(
+                              AppRoutes.addItem,
+                              arguments: item,
+                            ),
+                        onDelete:
+                            () => context.dialog(
+                              body: RemoveItemDialogBody(
+                                onConfirm: () {
+                                  context.read<InventoryCubit>().removeProduct(
+                                    item,
+                                  );
+
+                                  context.pop();
+                                },
+                                onCancel: () => context.pop(),
+                              ),
+                            ),
+                        onRestock:
+                            () => context.pushNamed(
+                              AppRoutes.addBatch,
+                              arguments: item,
+                            ),
                       ),
+
+                  firstPageProgressIndicatorBuilder: (context) {
+                    return const FirstPageProgressIndicator(
+                      shimmer: InventoryProductShimmer(),
                     );
                   },
-                );
-            }
-          },
-        ),
-
-        SliverToBoxAdapter(child: SizedBox(height: 8.h)),
-
-        BlocBuilder<InventoryBloc, InventoryState>(
-          builder: (context, state) {
-            switch (state) {
-              case InventorySearching():
-                return SliverList.builder(
-                  itemCount: state.searchedProducts.length + 1,
-                  itemBuilder: (context, index) {
-                    if (index == state.searchedProducts.length) {
-                      return context
-                                  .read<InventoryBloc>()
-                                  .isSearchLastItemReached ||
-                              state.searchedProducts.isEmpty
-                          ? SizedBox(
-                            height: 64.h,
-                            child: Center(
-                              child: Text(
-                                state.searchedProducts.isEmpty
-                                    ? "No products found for this query"
-                                    : "No More Results",
-                              ),
-                            ),
-                          )
-                          : SizedBox(
-                            height: 64.h,
-                            child: const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
-                    }
-                    return InventoryProduct(
-                      product: state.searchedProducts[index],
-                      onEdit:
-                          () => context.pushNamed(
-                            AppRoutes.addItem,
-                            arguments: state.searchedProducts[index],
-                          ),
-                      onDelete: () {},
-                      onRestock: () {},
+                  newPageProgressIndicatorBuilder: (context) {
+                    return SizedBox(
+                      height: 64.h,
+                      child: const Center(child: CircularProgressIndicator()),
                     );
                   },
-                );
-              case InventoryLoaded():
-                return SliverList.builder(
-                  itemCount: state.products.length + 1,
-                  itemBuilder: (context, index) {
-                    if (index == state.products.length) {
-                      return context.read<InventoryBloc>().isFeedLastItemReached
-                          ? SizedBox(
-                            height: 64.h,
-                            child: Center(
-                              child: Text(
-                                state.products.isEmpty
-                                    ? "No Products Found, try adding an item!"
-                                    : "No More Results",
-                              ),
-                            ),
-                          )
-                          : SizedBox(
-                            height: 64.h,
-                            child: const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
-                    }
-                    return InventoryProduct(
-                      product: state.products[index],
-                      onEdit:
-                          () => context.pushNamed(
-                            AppRoutes.addItem,
-                            arguments: state.products[index],
-                          ),
-                      onDelete: () {},
-                      onRestock: () {},
-                    );
-                  },
-                );
-
-              default:
-                return SliverList.builder(
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    return const InventoryProductShimmer();
-                  },
-                );
-            }
-          },
-        ),
-      ],
+                  noItemsFoundIndicatorBuilder:
+                      (context) => NoItemsFoundIndicator(isSearch: isSearching),
+                  noMoreItemsIndicatorBuilder:
+                      (context) => const NoMoreItemsIndicator(),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }

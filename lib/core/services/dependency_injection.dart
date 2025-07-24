@@ -19,10 +19,11 @@ import "package:supermarket/domain/repositories/auth_local_repository.dart";
 import "package:supermarket/domain/repositories/auth_remote_repository.dart";
 import "package:supermarket/domain/repositories/db_local_repository.dart";
 import "package:supermarket/domain/repositories/settings_repository.dart";
+import "package:supermarket/presentation/blocs/add_batch/add_batch_cubit.dart";
 import "package:supermarket/presentation/blocs/add_item/add_item_cubit.dart";
 import "package:supermarket/presentation/blocs/boarding/boarding_navigation_cubit.dart";
 import "package:supermarket/presentation/blocs/cashier/cashier_bloc.dart";
-import "package:supermarket/presentation/blocs/inventory/inventory_bloc.dart";
+import "package:supermarket/presentation/blocs/inventory/inventory_cubit.dart";
 import "package:supermarket/presentation/blocs/localization/localization_cubit.dart";
 import "package:supermarket/presentation/blocs/login/login_auth_cubit.dart";
 import "package:supermarket/presentation/blocs/login/login_ui_cubit.dart";
@@ -129,9 +130,10 @@ Future<void> setupServiceLocator() async {
 
   //* Inventory Blocs
   serviceLocator.registerLazySingleton(
-    () => InventoryBloc(serviceLocator(), serviceLocator()),
+    () => InventoryCubit(serviceLocator(), serviceLocator()),
   );
   serviceLocator.registerFactory(() => AddItemCubit(serviceLocator()));
+  serviceLocator.registerFactory(() => AddBatchCubit());
 
   //* Cashier Blocs
   serviceLocator.registerLazySingleton(() => CashierBloc());

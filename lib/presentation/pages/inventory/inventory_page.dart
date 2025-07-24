@@ -7,7 +7,7 @@ class InventoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AdaptiveLayout(
+    return const AdaptiveLayout(
       phoneLayout: InventoryPhone(),
       tabletLayout: InventoryPhone(),
       desktopLayout: InventoryPhone(),

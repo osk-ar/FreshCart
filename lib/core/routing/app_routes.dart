@@ -6,4 +6,5 @@ class AppRoutes {
   static const String forgotPassword = '/forgot-password';
   static const String home = '/home';
   static const String addItem = '/add-item';
+  static const String addBatch = '/add-batch';
 }

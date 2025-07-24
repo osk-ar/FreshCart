@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supermarket/core/routing/app_routes.dart';
 import 'package:supermarket/domain/entities/product_entity.dart';
+import 'package:supermarket/presentation/pages/add_batch/add_batch_page.dart';
 import 'package:supermarket/presentation/pages/add_item/add_item_page.dart';
 import 'package:supermarket/presentation/pages/boarding/boarding_page.dart';
 import 'package:supermarket/presentation/pages/home/home_page.dart';
@@ -27,6 +28,9 @@ class RouteManager {
         return _animateNavigation(
           AddItemPage(productToUpdate: productToUpdate),
         );
+      case AppRoutes.addBatch:
+        final product = settings.arguments as ProductEntity;
+        return _animateNavigation(AddBatchPage(product: product));
       default:
         return MaterialPageRoute(builder: (_) => notFoundScreen());
     }

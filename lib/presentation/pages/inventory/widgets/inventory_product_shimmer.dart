@@ -23,30 +23,27 @@ class InventoryProductShimmer extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // 1. Image Placeholder
                 Container(
                   width: 116.r,
                   height: 116.r,
                   decoration: BoxDecoration(
-                    color: Colors.white, // Color is required by shimmer
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                 ),
                 SizedBox(width: 8.w),
-                // 2. Text Details Placeholder
                 Column(
                   spacing: 16.h,
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox.shrink(),
-                    _buildPlaceholderLine(context, width: 160.w),
-                    _buildPlaceholderLine(context, width: 100.w),
+                    const SizedBox.shrink(),
+                    _buildPlaceholderLine(context, width: 160.w, height: 16.h),
+                    _buildPlaceholderLine(context, width: 100.w, height: 16.h),
                   ],
                 ),
                 SizedBox(width: 8.w),
 
-                // 3. Buttons Placeholder
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: _buildPlaceholderLine(
@@ -63,7 +60,6 @@ class InventoryProductShimmer extends StatelessWidget {
     );
   }
 
-  /// Helper widget to build a single shimmering line placeholder.
   Widget _buildPlaceholderLine(
     BuildContext context, {
     required double width,
@@ -73,8 +69,7 @@ class InventoryProductShimmer extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color:
-            Colors.white, // This color will be overridden by the shimmer effect
+        color: Colors.white,
         borderRadius: BorderRadius.circular(4.r),
       ),
     );

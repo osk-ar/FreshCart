@@ -65,6 +65,7 @@ class AppStrings {
 
   static String get checkout => "checkout".tr();
   static String get addItem => "add-item".tr();
+  static String get updateItem => "update-item".tr();
   static String get itemName => "item_name".tr();
   static String get price => "price".tr();
   static String get barcodeOptional => "barcodeOptional".tr();
@@ -83,7 +84,35 @@ class AppStrings {
 
   static String get gallery => "gallery".tr();
   static String get camera => "camera".tr();
-}
 
-// example of how to use the AppStrings class
-// static String get greeting => 'Hello'.tr();
+  static String get quantity => "quantity".tr();
+  static String get quantityEmptyError => "quantityEmptyError".tr();
+  static String get invalidNumberError => "invalidNumberError".tr();
+  static String get purchasePrice => "purchasePrice".tr();
+  static String get purchasePriceEmptyError => "purchasePriceEmptyError".tr();
+  static String get invalidPriceError => "invalidPriceError".tr();
+
+  static String get restock => "restock".tr();
+  static String get productionDate => "productionDate".tr();
+  static String get expiryDate => "expiryDate".tr();
+  static String get receivedDate => "receivedDate".tr();
+  static String get addBatch => "addBatch".tr();
+  static String get selectDate => "selectDate".tr();
+  static String get batchAddedSuccessfully => "batchAddedSuccessfully".tr();
+
+  static String get productionAndExpiryAreRequiredError =>
+      "productionAndExpiryAreRequiredError".tr();
+  static String get expiryBeforeProductionError =>
+      "expiryBeforeProductionError".tr();
+
+  static String get confirmDeletion => "confirmDeletion".tr();
+  static String get deleteProductConfirmation =>
+      "deleteProductConfirmation".tr();
+  static String get cancel => "cancel".tr();
+  static String get delete => "delete".tr();
+
+  static String get noProductsFoundHint => "noProductsFoundHint".tr();
+  static String get noMoreResults => "noMoreResults".tr();
+  static String get noProductsFoundForQuery => "noProductsFoundForQuery".tr();
+  static String get edit => "edit".tr();
+}

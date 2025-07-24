@@ -10,10 +10,8 @@ class SearchSliverAppbar extends StatefulWidget {
     super.key,
     required this.onSearchChanged,
     this.lastQuery,
-    this.onClear,
   });
   final void Function(String) onSearchChanged;
-  final VoidCallback? onClear;
   final String? lastQuery;
 
   @override
@@ -21,7 +19,7 @@ class SearchSliverAppbar extends StatefulWidget {
 }
 
 class _SearchSliverAppbarState extends State<SearchSliverAppbar> {
-  static const int _debounceMilliSeconds = 700;
+  static const int _debounceMilliSeconds = 800;
   Timer? _debounceTimer;
 
   late final TextEditingController _controller;
@@ -65,7 +63,17 @@ class _SearchSliverAppbarState extends State<SearchSliverAppbar> {
       ),
       actions: [
         IconButton(
-          onPressed: () => {_controller.clear(), widget.onClear?.call()},
+          onPressed: () {
+            final String lastQuery = _controller.text;
+
+            if (lastQuery.isEmpty) {
+              context.pop();
+              return;
+            }
+
+            _controller.clear();
+            widget.onSearchChanged("");
+          },
           icon: Icon(Icons.clear_rounded, color: context.colorScheme.primary),
         ),
         SizedBox(width: 8.w),

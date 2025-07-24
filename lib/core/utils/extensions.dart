@@ -37,7 +37,7 @@ extension NavigationExtension on BuildContext {
 }
 
 extension SnackBarExtension on BuildContext {
-  void message(String message) {
+  void snackBar(String message, [bool isError = false]) {
     ScaffoldMessenger.of(this).showSnackBar(SnackBar(content: Text(message)));
   }
 }
@@ -55,6 +55,27 @@ extension BottomSheet on BuildContext {
         borderRadius: borderRadius,
         side: borderSide,
       ),
+    );
+  }
+}
+
+extension Dialog on BuildContext {
+  Future<void> dialog({required Widget body}) {
+    return showDialog(context: this, builder: (context) => body);
+  }
+}
+
+extension DatePicker on BuildContext {
+  Future<DateTime?> datePicker({
+    required DateTime initialDate,
+    required DateTime firstDate,
+    required DateTime lastDate,
+  }) {
+    return showDatePicker(
+      context: this,
+      initialDate: initialDate,
+      firstDate: firstDate,
+      lastDate: lastDate,
     );
   }
 }

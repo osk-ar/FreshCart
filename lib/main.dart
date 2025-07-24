@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:supermarket/app.dart';
 import 'package:supermarket/core/constants/app_paths.dart';
 import 'package:supermarket/core/services/dependency_injection.dart';
-import 'package:supermarket/core/services/local_database_service.dart';
 import 'package:supermarket/core/services/localization_service.dart';
 import 'package:supermarket/firebase_options.dart';
 // import 'package:flutter_native_splash/flutter_native_splash.dart';
+// import 'package:supermarket/core/services/local_database_service.dart';
 
 Future<void> main() async {
   // 1. Ensure Flutter bindings are initialized
@@ -39,8 +39,8 @@ Future<void> main() async {
 
   // 6. Initialize GetIt service locator
   await setupServiceLocator();
-
   //! 7. Debugging
+  // LocalDatabaseService.deleteDatabaseFile();
   //* debugRepaintRainbowEnabled = true;
   // FlutterNativeSplash.preserve(widgetsBinding: WidgetsBinding.instance);
 
@@ -59,16 +59,20 @@ Future<void> main() async {
 
 
 
-/*
+  /*
+
   * navigate to home from login and register
   * complete the firebase auth datasource
 
-  ? latest added is add-item page and cubit, inventory bloc search and addItem
+  ? latest added is add-batch page and cubit, inventory bloc restock, update and remove
 
-  next session: 1- translate all. 2- optimize add-item page.
+  next session: 
+    1- migrate pagination to infinite scroll pagination package.
+    2- start cashier screen
 
 
- */
+
+  */
 
 
 
@@ -84,9 +88,6 @@ sqfliteFfiInit is provided as an implementation reference for loading the sqlite
 
  */
 
-
-
-
 /*
 
 cashier
@@ -95,3 +96,112 @@ stats
 options
 
  */
+
+/*
+
+return SliverList.builder(
+                  itemCount: state.products.length + 1,
+                  itemBuilder: (context, index) {
+                    if (index == state.products.length) {
+                      return context.read<InventoryBloc>().isFeedLastItemReached
+                          ? SizedBox(
+                            height: 64.h,
+                            child: Center(
+                              child: Text(
+                                state.products.isEmpty
+                                    ? AppStrings.noProductsFoundHint
+                                    : AppStrings.noMoreResults,
+                              ),
+                            ),
+                          )
+                          : SizedBox(
+                            height: 64.h,
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                    }
+                    return InventoryProductWidget(
+                      product: state.products[index],
+                      onEdit:
+                          () => context.pushNamed(
+                            AppRoutes.addItem,
+                            arguments: state.products[index],
+                          ),
+                      onDelete:
+                          () => context.dialog(
+                            body: RemoveItemDialogBody(
+                              onCancel: () => context.pop(),
+                              onConfirm: () {
+                                context.read<InventoryBloc>().add(
+                                  InventoryRemoveItemEvent(
+                                    state.products[index].id!,
+                                  ),
+                                );
+                                context.pop();
+                              },
+                            ),
+                          ),
+                      onRestock:
+                          () => context.pushNamed(
+                            AppRoutes.addBatch,
+                            arguments: state.products[index],
+                          ),
+                    );
+                  },
+                );
+
+ */
+
+/*
+
+return SliverList.builder(
+                  itemCount: state.searchedProducts.length + 1,
+                  itemBuilder: (context, index) {
+                    if (index == state.searchedProducts.length) {
+                      return context
+                                  .read<InventoryBloc>()
+                                  .isSearchLastItemReached ||
+                              state.searchedProducts.isEmpty
+                          ? SizedBox(
+                            height: 64.h,
+                            child: Center(
+                              child: Text(
+                                state.searchedProducts.isEmpty
+                                    ? AppStrings.noProductsFoundForQuery
+                                    : AppStrings.noMoreResults,
+                              ),
+                            ),
+                          )
+                          : SizedBox(
+                            height: 64.h,
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                    }
+                    return InventoryProductWidget(
+                      product: state.searchedProducts[index],
+                      onEdit:
+                          () => context.pushNamed(
+                            AppRoutes.addItem,
+                            arguments: state.searchedProducts[index],
+                          ),
+                      onDelete:
+                          () => context.read<InventoryBloc>().add(
+                            InventoryRemoveItemEvent(
+                              state.searchedProducts[index].id!,
+                            ),
+                          ),
+                      onRestock:
+                          () => context.pushNamed(
+                            AppRoutes.addBatch,
+                            arguments: state.searchedProducts[index],
+                          ),
+                    );
+                  },
+                );
+
+
+ */
+

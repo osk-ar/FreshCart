@@ -91,4 +91,35 @@ class ValidationService {
     }
     return null;
   }
+
+  static String? validateQuantity(String? quantity) {
+    if (quantity == null || quantity.isEmpty) {
+      return AppStrings.quantityEmptyError;
+    }
+    if (int.tryParse(quantity) == null) {
+      return AppStrings.invalidNumberError;
+    }
+    return null;
+  }
+
+  static String? validateDate(DateTime? date) {
+    if (date == null) {
+      return AppStrings.productionAndExpiryAreRequiredError;
+    }
+    return null;
+  }
+
+  static String? validateExpiryDate({
+    required DateTime? productionDate,
+    required DateTime? expiryDate,
+  }) {
+    if (expiryDate == null || productionDate == null) {
+      return null;
+    }
+
+    if (expiryDate.isBefore(productionDate)) {
+      return AppStrings.expiryBeforeProductionError;
+    }
+    return null;
+  }
 }

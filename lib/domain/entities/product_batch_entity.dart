@@ -36,4 +36,9 @@ class ProductBatchEntity {
       receivedDate: receivedDate ?? this.receivedDate,
     );
   }
+
+  @override
+  String toString() {
+    return '''ProductBatchEntity(id: $id, productId: $productId, quantity: $quantity, purchasePrice: $purchasePrice, productionDate: $productionDate, expiryDate: $expiryDate, receivedDate: $receivedDate)''';
+  }
 }

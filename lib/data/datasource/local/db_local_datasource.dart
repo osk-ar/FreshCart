@@ -7,6 +7,30 @@ class DBLocalDatasource {
 
   //* --- Product Management ---
 
+  /// Retrieves a product by its ID.
+  Future<Map<String, dynamic>?> getProductById(int id) async {
+    final products = await db.query(
+      'Products',
+      where: 'product_id = ?',
+      whereArgs: [id],
+    );
+
+    return products.first;
+  }
+
+  /// Retrieves all products from the database.
+  Future<List<Map<String, dynamic>>> getAllProducts({
+    int? limit,
+    int? offset,
+  }) async {
+    return await db.query(
+      'Products',
+      orderBy: 'name ASC',
+      limit: limit,
+      offset: offset,
+    );
+  }
+
   /// Adds a new product to the Products table.
   Future<int> addProduct({
     required String name,
@@ -27,52 +51,31 @@ class DBLocalDatasource {
     required int productId,
     required String name,
     required double sellingPrice,
-    required int quantity,
     String? imagePath,
   }) async {
     return await db.update(
       'Products',
-      {
-        'name': name,
-        'selling_price': sellingPrice,
-        'quantity': quantity,
-        'image_path': imagePath,
-      },
+      {'name': name, 'selling_price': sellingPrice, 'image_path': imagePath},
       where: 'product_id = ?',
       whereArgs: [productId],
     );
   }
 
-  /// Deletes a product and its associated inventory batches (due to ON DELETE CASCADE).
+  /// Deletes a product and its associated inventory batches.
   Future<int> deleteProduct(int productId) async {
-    return await db.delete(
-      'Products',
-      where: 'product_id = ?',
-      whereArgs: [productId],
-    );
-  }
+    return await db.transaction((txn) async {
+      await txn.delete(
+        'Products',
+        where: 'product_id = ?',
+        whereArgs: [productId],
+      );
 
-  /// Retrieves all products from the database.
-  Future<List<Map<String, dynamic>>> getAllProducts({
-    int? limit,
-    int? offset,
-  }) async {
-    return await db.query(
-      'Products',
-      orderBy: 'name ASC',
-      limit: limit,
-      offset: offset,
-    );
-  }
-
-  Future<Map<String, dynamic>?> getProductById(int id) async {
-    final products = await db.query(
-      'Products',
-      where: 'product_id = ?',
-      whereArgs: [id],
-    );
-
-    return products.first;
+      return await txn.delete(
+        'InventoryBatches',
+        where: 'product_id = ?',
+        whereArgs: [productId],
+      );
+    });
   }
 
   Future<List<Map<String, dynamic>>> searchProducts(
@@ -101,7 +104,19 @@ class DBLocalDatasource {
     DateTime? productionDate,
   }) async {
     return await db.transaction((txn) async {
-      await txn.insert('InventoryBatches', {
+      final currentStock = await getProductStockCount(
+        productId,
+        dbExecutor: txn,
+      );
+
+      await txn.update(
+        'Products',
+        {'quantity': currentStock + quantity},
+        where: 'product_id = ?',
+        whereArgs: [productId],
+      );
+
+      return await txn.insert('InventoryBatches', {
         'product_id': productId,
         'quantity_remaining': quantity,
         'purchase_price': purchasePrice,
@@ -109,13 +124,6 @@ class DBLocalDatasource {
         'expiry_date': expiryDate.toIso8601String().split('T').first,
         'received_date': DateTime.now().toIso8601String().split('T').first,
       });
-
-      return await txn.update(
-        'Products',
-        {'quantity': (await getProductStockCount(productId)) + quantity},
-        where: 'product_id = ?',
-        whereArgs: [productId],
-      );
     });
   }
 
@@ -151,11 +159,16 @@ class DBLocalDatasource {
   }
 
   /// Gets the total stock quantity for a specific product across all batches.
-  Future<int> getProductStockCount(int productId) async {
-    final result = await db.rawQuery(
+  Future<int> getProductStockCount(
+    int productId, {
+    DatabaseExecutor? dbExecutor,
+  }) async {
+    final dbClient = dbExecutor ?? db;
+
+    final result = await dbClient.rawQuery(
       '''
-          SELECT SUM(quantity_remaining) as total_stock
-          FROM InventoryBatches
+          SELECT quantity
+          FROM Products
           WHERE product_id = ?
       ''',
       [productId],

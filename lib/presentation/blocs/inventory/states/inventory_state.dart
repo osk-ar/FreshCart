@@ -1,25 +1,75 @@
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:supermarket/domain/entities/product_entity.dart';
 
-abstract class InventoryState {}
+class InventoryState {
+  final PagingState<int, ProductEntity> pagingState;
 
-class InventoryInitial extends InventoryState {}
+  InventoryState(this.pagingState);
 
-class InventoryLoading extends InventoryState {}
+  InventoryState copyWith({
+    List<List<ProductEntity>>? pages,
+    List<int>? keys,
+    Object? error,
+    bool? hasNextPage,
+    bool? isLoading,
+  }) {
+    final PagingState<int, ProductEntity> newState =
+        PagingState<int, ProductEntity>(
+          pages: pages ?? pagingState.pages,
+          keys: keys ?? pagingState.keys,
+          hasNextPage: hasNextPage ?? pagingState.hasNextPage,
+          isLoading: isLoading ?? pagingState.isLoading,
+          error: error ?? pagingState.error,
+        );
 
-class InventoryLoaded extends InventoryState {
-  final List<ProductEntity> products;
-
-  InventoryLoaded(this.products);
+    return InventoryState(newState);
+  }
 }
 
-class InventoryError extends InventoryState {
-  final String error;
+class InventoryFeed extends InventoryState {
+  InventoryFeed(super.pagingState);
 
-  InventoryError(this.error);
+  @override
+  InventoryFeed copyWith({
+    List<List<ProductEntity>>? pages,
+    List<int>? keys,
+    Object? error,
+    bool? hasNextPage,
+    bool? isLoading,
+  }) {
+    final PagingState<int, ProductEntity> newState =
+        PagingState<int, ProductEntity>(
+          pages: pages ?? pagingState.pages,
+          keys: keys ?? pagingState.keys,
+          hasNextPage: hasNextPage ?? pagingState.hasNextPage,
+          isLoading: isLoading ?? pagingState.isLoading,
+          error: error ?? pagingState.error,
+        );
+
+    return InventoryFeed(newState);
+  }
 }
 
-class InventorySearching extends InventoryState {
-  final List<ProductEntity> searchedProducts;
+class InventorySearch extends InventoryState {
+  InventorySearch(super.pagingState);
 
-  InventorySearching(this.searchedProducts);
+  @override
+  InventorySearch copyWith({
+    List<List<ProductEntity>>? pages,
+    List<int>? keys,
+    Object? error,
+    bool? hasNextPage,
+    bool? isLoading,
+  }) {
+    final PagingState<int, ProductEntity> newState =
+        PagingState<int, ProductEntity>(
+          pages: pages ?? pagingState.pages,
+          keys: keys ?? pagingState.keys,
+          hasNextPage: hasNextPage ?? pagingState.hasNextPage,
+          isLoading: isLoading ?? pagingState.isLoading,
+          error: error ?? pagingState.error,
+        );
+
+    return InventorySearch(newState);
+  }
 }

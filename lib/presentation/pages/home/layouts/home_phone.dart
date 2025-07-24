@@ -17,13 +17,16 @@ class HomePhone extends StatefulWidget {
 
 class _HomePhoneState extends State<HomePhone> {
   final List<BottomNavigationBarItem> _navbarItems = [
-    BottomNavigationBarItem(icon: Icon(Icons.home), label: AppStrings.home),
     BottomNavigationBarItem(
-      icon: Icon(Icons.inventory_2_rounded),
+      icon: const Icon(Icons.home),
+      label: AppStrings.home,
+    ),
+    BottomNavigationBarItem(
+      icon: const Icon(Icons.inventory_2_rounded),
       label: AppStrings.inventory,
     ),
     BottomNavigationBarItem(
-      icon: Icon(Icons.bar_chart_rounded),
+      icon: const Icon(Icons.bar_chart_rounded),
       label: AppStrings.stats,
     ),
   ];
@@ -64,6 +67,7 @@ class _HomePhoneState extends State<HomePhone> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       floatingActionButton: _buildFABs(selectedIndex),
       body: LazyLoadIndexedStack(index: selectedIndex, children: _pages),
       bottomNavigationBar: BottomNavigationBar(
