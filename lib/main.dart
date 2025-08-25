@@ -64,11 +64,10 @@ Future<void> main() async {
   * navigate to home from login and register
   * complete the firebase auth datasource
 
-  ? latest added is add-batch page and cubit, inventory bloc restock, update and remove
+  ? latest added is: inventory finished
 
   next session: 
-    1- migrate pagination to infinite scroll pagination package.
-    2- start cashier screen
+    1- start cashier screen
 
 
 
@@ -96,112 +95,3 @@ stats
 options
 
  */
-
-/*
-
-return SliverList.builder(
-                  itemCount: state.products.length + 1,
-                  itemBuilder: (context, index) {
-                    if (index == state.products.length) {
-                      return context.read<InventoryBloc>().isFeedLastItemReached
-                          ? SizedBox(
-                            height: 64.h,
-                            child: Center(
-                              child: Text(
-                                state.products.isEmpty
-                                    ? AppStrings.noProductsFoundHint
-                                    : AppStrings.noMoreResults,
-                              ),
-                            ),
-                          )
-                          : SizedBox(
-                            height: 64.h,
-                            child: const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
-                    }
-                    return InventoryProductWidget(
-                      product: state.products[index],
-                      onEdit:
-                          () => context.pushNamed(
-                            AppRoutes.addItem,
-                            arguments: state.products[index],
-                          ),
-                      onDelete:
-                          () => context.dialog(
-                            body: RemoveItemDialogBody(
-                              onCancel: () => context.pop(),
-                              onConfirm: () {
-                                context.read<InventoryBloc>().add(
-                                  InventoryRemoveItemEvent(
-                                    state.products[index].id!,
-                                  ),
-                                );
-                                context.pop();
-                              },
-                            ),
-                          ),
-                      onRestock:
-                          () => context.pushNamed(
-                            AppRoutes.addBatch,
-                            arguments: state.products[index],
-                          ),
-                    );
-                  },
-                );
-
- */
-
-/*
-
-return SliverList.builder(
-                  itemCount: state.searchedProducts.length + 1,
-                  itemBuilder: (context, index) {
-                    if (index == state.searchedProducts.length) {
-                      return context
-                                  .read<InventoryBloc>()
-                                  .isSearchLastItemReached ||
-                              state.searchedProducts.isEmpty
-                          ? SizedBox(
-                            height: 64.h,
-                            child: Center(
-                              child: Text(
-                                state.searchedProducts.isEmpty
-                                    ? AppStrings.noProductsFoundForQuery
-                                    : AppStrings.noMoreResults,
-                              ),
-                            ),
-                          )
-                          : SizedBox(
-                            height: 64.h,
-                            child: const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
-                    }
-                    return InventoryProductWidget(
-                      product: state.searchedProducts[index],
-                      onEdit:
-                          () => context.pushNamed(
-                            AppRoutes.addItem,
-                            arguments: state.searchedProducts[index],
-                          ),
-                      onDelete:
-                          () => context.read<InventoryBloc>().add(
-                            InventoryRemoveItemEvent(
-                              state.searchedProducts[index].id!,
-                            ),
-                          ),
-                      onRestock:
-                          () => context.pushNamed(
-                            AppRoutes.addBatch,
-                            arguments: state.searchedProducts[index],
-                          ),
-                    );
-                  },
-                );
-
-
- */
-

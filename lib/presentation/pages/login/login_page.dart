@@ -18,7 +18,7 @@ class LoginPage extends StatelessWidget {
         BlocProvider(create: (context) => serviceLocator<LoginAuthCubit>()),
         BlocProvider(create: (context) => serviceLocator<LocalizationCubit>()),
       ],
-      child: AdaptiveLayout(
+      child: const AdaptiveLayout(
         phoneLayout: LoginPhone(),
         tabletLayout: LoginPhone(),
         desktopLayout: LoginPhone(),

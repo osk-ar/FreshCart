@@ -2,12 +2,12 @@ import 'package:equatable/equatable.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:supermarket/domain/entities/product_entity.dart';
 
-class InventoryState extends Equatable {
+class CashierPaginationState extends Equatable {
   final PagingState<int, ProductEntity> pagingState;
 
-  const InventoryState(this.pagingState);
+  const CashierPaginationState(this.pagingState);
 
-  InventoryState copyWith({
+  CashierPaginationState copyWith({
     List<List<ProductEntity>>? pages,
     List<int>? keys,
     Object? error,
@@ -23,18 +23,18 @@ class InventoryState extends Equatable {
           error: error ?? pagingState.error,
         );
 
-    return InventoryState(newState);
+    return CashierPaginationState(newState);
   }
 
   @override
   List<Object?> get props => [pagingState];
 }
 
-class InventoryFeed extends InventoryState {
-  const InventoryFeed(super.pagingState);
+class CashierFeed extends CashierPaginationState {
+  const CashierFeed(super.pagingState);
 
   @override
-  InventoryFeed copyWith({
+  CashierFeed copyWith({
     List<List<ProductEntity>>? pages,
     List<int>? keys,
     Object? error,
@@ -50,15 +50,15 @@ class InventoryFeed extends InventoryState {
           error: error ?? pagingState.error,
         );
 
-    return InventoryFeed(newState);
+    return CashierFeed(newState);
   }
 }
 
-class InventorySearch extends InventoryState {
-  const InventorySearch(super.pagingState);
+class CashierSearch extends CashierPaginationState {
+  const CashierSearch(super.pagingState);
 
   @override
-  InventorySearch copyWith({
+  CashierSearch copyWith({
     List<List<ProductEntity>>? pages,
     List<int>? keys,
     Object? error,
@@ -74,6 +74,6 @@ class InventorySearch extends InventoryState {
           error: error ?? pagingState.error,
         );
 
-    return InventorySearch(newState);
+    return CashierSearch(newState);
   }
 }
